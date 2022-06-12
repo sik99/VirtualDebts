@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace VirtualDebts.Models
 {
-    public class AppState
+    public class AppState : ICloneable
     {
         public List<User> Users { get; set; } = new List<User>();
 
-        public AppState Copy()
+        public object Clone()
         {
             return new AppState
             {

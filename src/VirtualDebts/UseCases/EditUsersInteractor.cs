@@ -9,10 +9,10 @@ namespace VirtualDebts.UseCases
 {
     public class EditUsersInteractor
     {
-        private readonly Store store;
+        private readonly Store<AppState> store;
         private readonly INavigationService navigationService;
 
-        public EditUsersInteractor(Store store, INavigationService navigationService)
+        public EditUsersInteractor(Store<AppState> store, INavigationService navigationService)
         {
             this.store = store ?? throw new ArgumentNullException(nameof(store));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));

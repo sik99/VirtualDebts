@@ -1,24 +1,25 @@
-﻿using VirtualDebts.Models;
+using System;
+using VirtualDebts.Models;
 
 namespace VirtualDebts.Services
 {
     public delegate void StateChangedHandler();
-    public delegate bool StateUpdater(AppState state);
+    public delegate bool StateUpdater<TState>(TState state);
 
-    public class Store
+    public class Store<TState> where TState : ICloneable, new()
     {
         private readonly object stateLock = new object();
-        private AppState state = new AppState();
+        private TState state = new TState();
 
-        public AppState GetState()
+        public TState GetState()
         {
             lock (this.stateLock)
             {
-                return this.state.Copy();
+                return (TState)this.state.Clone();
             }
         }
 
-        public bool Update(StateUpdater transform)
+        public bool Update(StateUpdater<TState> transform)
         {
             lock (this.stateLock)
             {

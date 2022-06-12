@@ -19,10 +19,10 @@ namespace VirtualDebts.Controllers
         public ICommand ViewLoadedCommand { get; }
 
         private readonly EditUsersInteractor interactor;
-        private readonly Store store;
+        private readonly Store<AppState> store;
         private readonly ICommandFactory commandFactory;
 
-        public EditUsersController(EditUsersInteractor interactor, Store store, ICommandFactory commandFactory, IDispatcher dispatcher) : base(dispatcher)
+        public EditUsersController(EditUsersInteractor interactor, Store<AppState> store, ICommandFactory commandFactory, IDispatcher dispatcher) : base(dispatcher)
         {
             this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
             this.store = store ?? throw new ArgumentNullException(nameof(store));
