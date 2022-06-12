@@ -19,10 +19,10 @@ namespace VirtualDebts.Controllers
         public ICommand ViewLoadedCommand { get; }
 
         private readonly EditUsersInteractor interactor;
-        private readonly Store store;
+        private readonly Store<AppState> store;
         private readonly ICommandFactory commandFactory;
 
-        public EditUsersController(EditUsersInteractor interactor, Store store, ICommandFactory commandFactory, IDispatcher dispatcher) : base(dispatcher)
+        public EditUsersController(EditUsersInteractor interactor, Store<AppState> store, ICommandFactory commandFactory, IDispatcher dispatcher) : base(dispatcher)
         {
             this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
             this.store = store ?? throw new ArgumentNullException(nameof(store));
@@ -58,7 +58,7 @@ namespace VirtualDebts.Controllers
 
         private void UpdateProperties()
         {
-            var users = this.store.State.Users;
+            var users = this.store.GetState().Users;
             this.ViewModel.UserList = users.Select(user => user.Name).ToList();
             this.ViewModel.UserListAsString = this.ViewModel.UserList.Count > 0
                                            ? string.Join("\n", this.ViewModel.UserList)

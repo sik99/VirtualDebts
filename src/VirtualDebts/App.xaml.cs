@@ -53,7 +53,7 @@ namespace VirtualDebts
             services.AddSingleton<IDispatcher, XamarinDispatcher>();
             services.AddSingleton<XamarinViewProvider>();
             services.AddSingleton<INavigationService, XamarinNavigationService>();
-            services.AddSingleton<Store>();
+            services.AddSingleton<Store<AppState>>();
 
             services.AddSingleton<MainMenuController>();
             services.AddSingleton<MainMenuView>(provider =>
