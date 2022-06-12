@@ -9,18 +9,14 @@ namespace VirtualDebts.Services
     {
         private readonly object stateLock = new object();
         private AppState state = new AppState();
-        public AppState State
+
+        public AppState GetState()
         {
-            get
+            lock (this.stateLock)
             {
-                lock (this.stateLock)
-                {
-                    return this.state.Copy();
-                }
+                return this.state.Copy();
             }
         }
-
-        public event StateChangedHandler StateChanged;
 
         public bool Update(StateUpdater transform)
         {
@@ -31,5 +27,7 @@ namespace VirtualDebts.Services
                 return isSuccess;
             }
         }
+
+        public event StateChangedHandler StateChanged;
     }
 }

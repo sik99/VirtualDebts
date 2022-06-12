@@ -58,7 +58,7 @@ namespace VirtualDebts.Controllers
 
         private void UpdateProperties()
         {
-            var users = this.store.State.Users;
+            var users = this.store.GetState().Users;
             this.ViewModel.UserList = users.Select(user => user.Name).ToList();
             this.ViewModel.UserListAsString = this.ViewModel.UserList.Count > 0
                                            ? string.Join("\n", this.ViewModel.UserList)
