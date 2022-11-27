@@ -103,6 +103,57 @@ namespace VirtualDebts.UseCases
         }
         #endregion
 
+        #region RemoveUser function tests
+        [TestMethod()]
+        public async Task RemoveUser_removes_user_with_zero_balance()
+        {
+            // Given
+            string userName = "Test user";
+            this.GivenUsersWithDebts((userName, 0));
+
+            // When
+            await this.givenInstance.RemoveUser(userName);
+
+            // Then
+            this.ThenUsersShouldBeEmpty();
+            this.givenFixture.NavigationServiceMock.VerifyNoOtherCalls();
+        }
+
+        [TestMethod()]
+        public async Task RemoveUser_shows_message_box_when_user_balance_is_nonzero()
+        {
+            // Given
+            string userName = "Test user";
+            this.GivenUsersWithDebts((userName, 100));
+
+            // When
+            await this.givenInstance.RemoveUser(userName);
+
+            // Then
+            this.ThenUsersCountShouldBe(1);
+            this.ThenUsersShouldContain(userName);
+            this.ThenRemoveUserFailedMessagePopsUp(string.Format(Properties.Resources.EditUsers_RemoveDebtorMsg, userName));
+            this.givenFixture.NavigationServiceMock.VerifyNoOtherCalls();
+        }
+
+        [TestMethod()]
+        public async Task RemoveUser_does_nothing_for_nonexisting_user()
+        {
+            // Given
+            string realUser = "Real user";
+            this.GivenUsers(realUser);
+            string nonexistingUser = "Non-existing user";
+
+            // When
+            await this.givenInstance.RemoveUser(nonexistingUser);
+
+            // Then
+            this.ThenUsersCountShouldBe(1);
+            this.ThenUsersShouldContain(realUser);
+            this.givenFixture.NavigationServiceMock.VerifyNoOtherCalls();
+        }
+        #endregion
+
         #region Then
         private void ThenUsersShouldContain(string userName)
         {
@@ -126,9 +177,31 @@ namespace VirtualDebts.UseCases
                 mock => mock.ShowMessageBox(Properties.Resources.EditUsers_AddFailedMsg, message),
                 Times.Exactly(1));
         }
+
+        private void ThenRemoveUserFailedMessagePopsUp(string message)
+        {
+            this.givenFixture.NavigationServiceMock.Verify(
+                mock => mock.ShowMessageBox(Properties.Resources.EditUsers_RemoveFailedMsg, message),
+                Times.Exactly(1));
+        }
         #endregion
 
         #region Given
+        private void GivenUsersWithDebts(params (string, int)[] usersAndDebts)
+        {
+            var users = usersAndDebts
+                .Select(userAndDebt => new User(userAndDebt.Item1, userAndDebt.Item2))
+                .ToList();
+            bool isSuccess = this.givenFixture.Store.Update(appState =>
+            {
+                appState.Users = users;
+                return true;
+            });
+
+            isSuccess.Should().BeTrue();
+            this.givenFixture.Store.GetState().Users.Count.Should().Be(usersAndDebts.Length);
+        }
+
         private void GivenUsers(params string[] userNames)
         {
             var users = userNames
