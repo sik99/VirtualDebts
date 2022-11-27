@@ -1,6 +1,10 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
@@ -25,6 +29,47 @@ namespace VirtualDebts.Controllers
                 new XamarinCommandFactory(),
                 this.givenFixture.Dispatcher);
         }
+
+        #region View model tests
+        [TestMethod]
+        public void ViewLoaded_causes_view_model_to_update()
+        {
+            // We cannot easily set value to Store without notifying view model of the change.
+            // Therefore we only test the notification that follows every view model change.
+
+            // Given
+            bool wasViewModelUpdated = false;
+            this.givenInstance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { wasViewModelUpdated = true; };
+
+            // When
+            this.givenInstance.ViewLoadedCommand.Execute(null);
+
+            // Then
+            wasViewModelUpdated.Should().BeTrue();
+        }
+
+        [TestMethod]
+        public void Store_update_causes_view_model_to_update()
+        {
+            // Given
+            bool wasViewModelUpdated = false;
+            this.givenInstance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { wasViewModelUpdated = true; };
+
+            ImmutableList<string> userNames = new List<string> { "Alice", "Bob", "Cecilia" }.ToImmutableList();
+
+            // When
+            this.givenFixture.Store.Update((ref AppState storeState) =>
+            {
+                storeState = CreateAppState(userNames);
+                return true;
+            });
+
+            // Then
+            wasViewModelUpdated.Should().BeTrue();
+            this.givenInstance.ViewModel.UserList.Should().BeEquivalentTo(userNames);
+            this.givenInstance.ViewModel.UserListAsString.Should().Be("Alice\nBob\nCecilia");
+        }
+        #endregion
 
         #region OnAddUser tests
         [TestMethod]
@@ -139,6 +184,14 @@ namespace VirtualDebts.Controllers
             isSuccess.Should().BeTrue();
             this.givenFixture.Store.GetState().Users.Count.Should().Be(userNames.Length);
             this.givenInstance.ViewModel.UserList.Should().BeEquivalentTo(userNames);
+        }
+
+        private AppState CreateAppState(IList<string> userNames)
+        {
+            var users = userNames
+                .Select(userName => new User(userName))
+                .ToList();
+            return new AppState { Users = users };
         }
 
         internal class GivenFixture
