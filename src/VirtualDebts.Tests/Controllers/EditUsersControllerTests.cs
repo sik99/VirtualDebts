@@ -1,4 +1,4 @@
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -140,6 +140,19 @@ namespace VirtualDebts.Controllers
             // Then
             this.givenFixture.EditUsersInteractorMock.Verify(mock => mock.RemoveUser(userName), Times.Exactly(1));
             this.givenFixture.EditUsersInteractorMock.VerifyNoOtherCalls();
+        }
+
+        [TestMethod]
+        public async Task OnRemoveUser_throws_when_user_name_does_not_exist()
+        {
+            // Given
+            string userName = "Non-existing user name";
+
+            // When
+            Func<Task> action = () => this.givenInstance.RemoveUserCommand.ExecuteAsync(userName);
+
+            // Then
+            await action.Should().ThrowAsync<ArgumentOutOfRangeException>();
         }
 
         [TestMethod]
