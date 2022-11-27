@@ -30,7 +30,11 @@ namespace VirtualDebts.Controllers
             }
         }
 
-        public MainMenuController(ICommandFactory commandFactory, INavigationService navigationService, IDispatcher dispatcher) : base(dispatcher)
+        public MainMenuController(
+            ICommandFactory commandFactory,
+            INavigationService navigationService,
+            IDispatcher dispatcher)
+            : base(dispatcher)
         {
             this.commandFactory = commandFactory ?? throw new ArgumentNullException(nameof(commandFactory));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));

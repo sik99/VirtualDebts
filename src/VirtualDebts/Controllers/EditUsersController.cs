@@ -23,7 +23,12 @@ namespace VirtualDebts.Controllers
         private readonly Store<AppState> store;
         private readonly ICommandFactory commandFactory;
 
-        public EditUsersController(IEditUsersInteractor interactor, Store<AppState> store, ICommandFactory commandFactory, IDispatcher dispatcher) : base(dispatcher)
+        public EditUsersController(
+            IEditUsersInteractor interactor,
+            Store<AppState> store,
+            ICommandFactory commandFactory,
+            IDispatcher dispatcher)
+            : base(dispatcher)
         {
             this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
             this.store = store ?? throw new ArgumentNullException(nameof(store));
