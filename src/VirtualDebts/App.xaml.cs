@@ -49,7 +49,7 @@ namespace VirtualDebts
         {
             services.AddSingleton<EmptyView>();
 
-            services.AddSingleton<ICommandFactory, XamarinCommandFactory>();
+            services.AddSingleton<ICommandFactory, CommandFactory>();
             services.AddSingleton<IDispatcher, XamarinDispatcher>();
             services.AddSingleton<XamarinViewProvider>();
             services.AddSingleton<INavigationService, XamarinNavigationService>();

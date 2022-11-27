@@ -1,3 +1,4 @@
+using AsyncAwaitBestPractices.MVVM;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,8 +15,8 @@ namespace VirtualDebts.Controllers
     {
         public EditUsersViewModel ViewModel { get; private set; } = new EditUsersViewModel();
 
-        public ICommand AddUserCommand { get; }
-        public ICommand RemoveUserCommand { get; }
+        public IAsyncCommand<object> AddUserCommand { get; }
+        public IAsyncCommand<object> RemoveUserCommand { get; }
         public ICommand ViewLoadedCommand { get; }
 
         private readonly IEditUsersInteractor interactor;

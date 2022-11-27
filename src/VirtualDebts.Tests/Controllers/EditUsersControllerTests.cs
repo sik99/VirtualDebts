@@ -26,7 +26,7 @@ namespace VirtualDebts.Controllers
             this.givenInstance = new EditUsersController(
                 this.givenFixture.EditUsersInteractorMock.Object,
                 this.givenFixture.Store,
-                new XamarinCommandFactory(),
+                new CommandFactory(),
                 this.givenFixture.Dispatcher);
         }
 
