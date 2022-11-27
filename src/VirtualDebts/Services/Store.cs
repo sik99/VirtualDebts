@@ -4,7 +4,7 @@ using VirtualDebts.Models;
 namespace VirtualDebts.Services
 {
     public delegate void StateChangedHandler();
-    public delegate bool StateUpdater<TState>(TState state);
+    public delegate bool StateUpdater<TState>(ref TState state);
 
     public class Store<TState> where TState : ICloneable, new()
     {
@@ -23,7 +23,7 @@ namespace VirtualDebts.Services
         {
             lock (this.stateLock)
             {
-                bool isSuccess = transform(this.state);
+                bool isSuccess = transform(ref this.state);
                 this.StateChanged?.Invoke();
                 return isSuccess;
             }

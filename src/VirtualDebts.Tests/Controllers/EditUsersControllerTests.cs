@@ -130,7 +130,7 @@ namespace VirtualDebts.Controllers
             var users = userNames
                 .Select(userName => new User(userName))
                 .ToList();
-            bool isSuccess = this.givenFixture.Store.Update(appState =>
+            bool isSuccess = this.givenFixture.Store.Update((ref AppState appState) =>
             {
                 appState.Users = users;
                 return true;
