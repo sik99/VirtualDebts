@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
@@ -7,7 +7,7 @@ using VirtualDebts.Services;
 
 namespace VirtualDebts.UseCases
 {
-    public class EditUsersInteractor
+    public class EditUsersInteractor : IEditUsersInteractor
     {
         private readonly Store<AppState> store;
         private readonly INavigationService navigationService;

@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using VirtualDebts.Binding;
 using VirtualDebts.Controllers;
@@ -60,7 +60,7 @@ namespace VirtualDebts
                 new MainMenuView { BindingContext = provider.GetRequiredService<MainMenuController>() }
             );
 
-            services.AddScoped<EditUsersInteractor>();
+            services.AddScoped<IEditUsersInteractor, EditUsersInteractor>();
             services.AddScoped<EditUsersController>();
             services.AddScoped<EditUsersViewModel>();
             services.AddTransient<EditUsersView>(provider =>
