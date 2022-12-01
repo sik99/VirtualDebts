@@ -1,5 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FluentAssertions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Threading;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
 
@@ -30,6 +32,27 @@ namespace VirtualDebts.Controllers
             // Then
             ThenVerifyNavigatedToView(ViewId.EditUsers);
         }
+
+        [TestMethod]
+        public async Task OnEditUsers_prevents_any_other_navigation_to_take_place_during_its_execution()
+        {
+            // Given
+            var canNavigateIsCopiedEvent = new AutoResetEvent(false);
+            GivenNavigateToWaitsForEvent(canNavigateIsCopiedEvent);
+            this.givenInstance.CanNavigate.Should().BeTrue();
+
+            // When
+            var onEditUsersTask = this.givenInstance.EditUsersCommand.ExecuteAsync();
+            bool couldNavigateDuringTask = this.givenInstance.CanNavigate;
+            canNavigateIsCopiedEvent.Set();
+            await onEditUsersTask;
+
+            // Then
+            couldNavigateDuringTask.Should().BeFalse();
+            this.givenInstance.CanNavigate.Should().BeTrue();
+
+            ThenVerifyNavigatedToView(ViewId.EditUsers);
+        }
         #endregion
 
         #region OnNewPayment tests
@@ -40,6 +63,27 @@ namespace VirtualDebts.Controllers
             this.givenInstance.NewPaymentCommand.Execute(null);
 
             // Then
+            ThenVerifyNavigatedToView(ViewId.NewPayment);
+        }
+
+        [TestMethod]
+        public async Task OnNewPayment_prevents_any_other_navigation_to_take_place_during_its_execution()
+        {
+            // Given
+            var canNavigateIsCopiedEvent = new AutoResetEvent(false);
+            GivenNavigateToWaitsForEvent(canNavigateIsCopiedEvent);
+            this.givenInstance.CanNavigate.Should().BeTrue();
+
+            // When
+            var onEditUsersTask = this.givenInstance.NewPaymentCommand.ExecuteAsync();
+            bool couldNavigateDuringTask = this.givenInstance.CanNavigate;
+            canNavigateIsCopiedEvent.Set();
+            await onEditUsersTask;
+
+            // Then
+            couldNavigateDuringTask.Should().BeFalse();
+            this.givenInstance.CanNavigate.Should().BeTrue();
+
             ThenVerifyNavigatedToView(ViewId.NewPayment);
         }
         #endregion
@@ -54,6 +98,27 @@ namespace VirtualDebts.Controllers
             // Then
             ThenVerifyNavigatedToView(ViewId.CurrentBalance);
         }
+
+        [TestMethod]
+        public async Task OnCurrentBalance_prevents_any_other_navigation_to_take_place_during_its_execution()
+        {
+            // Given
+            var canNavigateIsCopiedEvent = new AutoResetEvent(false);
+            GivenNavigateToWaitsForEvent(canNavigateIsCopiedEvent);
+            this.givenInstance.CanNavigate.Should().BeTrue();
+
+            // When
+            var onEditUsersTask = this.givenInstance.CurrentBalanceCommand.ExecuteAsync();
+            bool couldNavigateDuringTask = this.givenInstance.CanNavigate;
+            canNavigateIsCopiedEvent.Set();
+            await onEditUsersTask;
+
+            // Then
+            couldNavigateDuringTask.Should().BeFalse();
+            this.givenInstance.CanNavigate.Should().BeTrue();
+
+            ThenVerifyNavigatedToView(ViewId.CurrentBalance);
+        }
         #endregion
 
         #region Then
@@ -65,6 +130,13 @@ namespace VirtualDebts.Controllers
         #endregion
 
         #region Given
+        private void GivenNavigateToWaitsForEvent(AutoResetEvent waitEvent)
+        {
+            this.givenFixture.NavigationServiceMock
+                    .Setup(mock => mock.NavigateTo(It.IsAny<ViewId>()))
+                    .Returns(Task.Factory.StartNew(() => waitEvent.WaitOne()));
+        }
+
         internal class GivenFixture
         {
             public readonly Mock<INavigationService> NavigationServiceMock = new Mock<INavigationService>(MockBehavior.Strict);

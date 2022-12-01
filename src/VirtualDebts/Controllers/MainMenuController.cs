@@ -1,15 +1,15 @@
-﻿using System;
+﻿using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using VirtualDebts.Binding;
 
 namespace VirtualDebts.Controllers
 {
     public class MainMenuController : ControllerBase
     {
-        public ICommand EditUsersCommand { get; }
-        public ICommand NewPaymentCommand { get; }
-        public ICommand CurrentBalanceCommand { get; }
+        public IAsyncCommand EditUsersCommand { get; }
+        public IAsyncCommand NewPaymentCommand { get; }
+        public IAsyncCommand CurrentBalanceCommand { get; }
 
         private readonly INavigationService navigationService;
         private readonly ICommandFactory commandFactory;
