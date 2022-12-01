@@ -11,8 +11,8 @@ namespace VirtualDebts.Controllers
         public ICommand NewPaymentCommand { get; }
         public ICommand CurrentBalanceCommand { get; }
 
-        private readonly ICommandFactory commandFactory;
         private readonly INavigationService navigationService;
+        private readonly ICommandFactory commandFactory;
 
         // Disable navigation to prevent double clicks adding multiple pages on the view stack.
         // It doesn't work when I am pressing the button for the first time after staring the app.
@@ -31,13 +31,13 @@ namespace VirtualDebts.Controllers
         }
 
         public MainMenuController(
-            ICommandFactory commandFactory,
             INavigationService navigationService,
+            ICommandFactory commandFactory,
             IDispatcher dispatcher)
             : base(dispatcher)
         {
-            this.commandFactory = commandFactory ?? throw new ArgumentNullException(nameof(commandFactory));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            this.commandFactory = commandFactory ?? throw new ArgumentNullException(nameof(commandFactory));
 
             this.EditUsersCommand = this.commandFactory.CreateAsync(this.OnEditUsers);
             this.NewPaymentCommand = this.commandFactory.CreateAsync(this.OnNewPayment);
