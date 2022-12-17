@@ -192,7 +192,7 @@ namespace VirtualDebts.UseCases
             var users = usersAndDebts
                 .Select(userAndDebt => new User(userAndDebt.Item1, userAndDebt.Item2))
                 .ToList();
-            bool isSuccess = this.givenFixture.Store.Update((ref AppState appState) =>
+            bool isSuccess = this.givenFixture.Store.Update(appState =>
             {
                 appState.Users = users;
                 return true;
@@ -207,7 +207,7 @@ namespace VirtualDebts.UseCases
             var users = userNames
                 .Select(userName => new User(userName))
                 .ToList();
-            bool isSuccess = this.givenFixture.Store.Update((ref AppState appState) =>
+            bool isSuccess = this.givenFixture.Store.Update(appState =>
             {
                 appState.Users = users;
                 return true;

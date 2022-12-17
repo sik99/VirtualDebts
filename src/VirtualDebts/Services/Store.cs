@@ -3,12 +3,12 @@ using System;
 namespace VirtualDebts.Services
 {
     public delegate void StateChangedHandler();
-    public delegate bool StateUpdater<TState>(ref TState state);
+    public delegate bool StateUpdater<TState>(TState state);
 
     public class Store<TState> where TState : ICloneable, new()
     {
         private readonly object stateLock = new object();
-        private TState state = new TState();
+        private readonly TState state = new TState();
 
         public TState GetState()
         {
@@ -22,7 +22,7 @@ namespace VirtualDebts.Services
         {
             lock (this.stateLock)
             {
-                bool isSuccess = transform(ref this.state);
+                bool isSuccess = transform(this.state);
                 this.StateChanged?.Invoke();
                 return isSuccess;
             }

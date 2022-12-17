@@ -58,9 +58,10 @@ namespace VirtualDebts.Controllers
             ImmutableList<string> userNames = new List<string> { "Alice", "Bob", "Cecilia" }.ToImmutableList();
 
             // When
-            this.givenFixture.Store.Update((ref AppState storeState) =>
+            this.givenFixture.Store.Update(appState =>
             {
-                storeState = CreateAppState(userNames);
+                var newState = CreateAppState(userNames);
+                appState.Users = newState.Users;
                 return true;
             });
 
@@ -188,7 +189,7 @@ namespace VirtualDebts.Controllers
             var users = userNames
                 .Select(userName => new User(userName))
                 .ToList();
-            bool isSuccess = this.givenFixture.Store.Update((ref AppState appState) =>
+            bool isSuccess = this.givenFixture.Store.Update(appState =>
             {
                 appState.Users = users;
                 return true;

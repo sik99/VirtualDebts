@@ -19,7 +19,7 @@ namespace VirtualDebts.Services
         public void Update_return_value_reflects_if_transformation_succeeded(bool isTransformSuccessful)
         {
             // When
-            bool result = this.givenInstance.Update((ref TestState state) => isTransformSuccessful);
+            bool result = this.givenInstance.Update(state => isTransformSuccessful);
 
             // Then
             result.Should().Be(isTransformSuccessful);
@@ -35,7 +35,7 @@ namespace VirtualDebts.Services
             this.givenInstance.StateChanged += () => { isStateChangedTriggered = true; };
 
             // When
-            this.givenInstance.Update((ref TestState _) => isTransformSuccessful);
+            this.givenInstance.Update(_ => isTransformSuccessful);
 
             // Then
             isStateChangedTriggered.Should().BeTrue();
@@ -45,31 +45,10 @@ namespace VirtualDebts.Services
         public void Update_applies_transformation_to_state_members()
         {
             // When
-            this.givenInstance.Update((ref TestState state) =>
+            this.givenInstance.Update(state =>
             {
                 state.ValueObject = 5;
                 state.ReferenceObject = new DataClass("Monday");
-                return true;
-            });
-
-            // Then
-            this.givenInstance.GetState().ShouldBe(5, "Monday");
-        }
-
-        [TestMethod]
-        public void Update_applies_transformation_to_whole_state()
-        {
-            // Given
-            TestState newState = new TestState
-            {
-                ValueObject = 5,
-                ReferenceObject = new DataClass("Monday")
-            };
-
-            // When
-            this.givenInstance.Update((ref TestState state) =>
-            {
-                state = newState;
                 return true;
             });
 
@@ -84,7 +63,7 @@ namespace VirtualDebts.Services
             this.GivenState(5, "Monday");
 
             // When
-            this.givenInstance.Update((ref TestState state) =>
+            this.givenInstance.Update(state =>
             {
                 state.ValueObject = 12;
                 return true;
@@ -105,7 +84,7 @@ namespace VirtualDebts.Services
             var actualState = this.givenInstance.GetState();
 
             // When
-            this.givenInstance.Update((ref TestState state) =>
+            this.givenInstance.Update(state =>
             {
                 state.ValueObject = 12;
                 state.ReferenceObject = new DataClass("Wednesday");
@@ -120,7 +99,7 @@ namespace VirtualDebts.Services
         #region Given
         void GivenState(int valueObject, string referencedContent)
         {
-            this.givenInstance.Update((ref TestState state) =>
+            this.givenInstance.Update(state =>
             {
                 state.ValueObject = valueObject;
                 state.ReferenceObject = new DataClass(referencedContent);

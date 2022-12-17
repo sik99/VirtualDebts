@@ -28,7 +28,7 @@ namespace VirtualDebts.UseCases
             }
 
             userName = userName.Trim();
-            bool isSuccess = this.store.Update((ref AppState appState) =>
+            bool isSuccess = this.store.Update(appState =>
             {
                 bool isUserExistent = appState.Users.FindIndex(user => user.Name == userName) >= 0;
                 if (isUserExistent)
@@ -48,7 +48,7 @@ namespace VirtualDebts.UseCases
         // TODO RemoveUser using Guid instead of name
         public async Task RemoveUser(string userName)
         {
-            bool isSuccess = this.store.Update((ref AppState appState) =>
+            bool isSuccess = this.store.Update(appState =>
             {
                 var userIndex = appState.Users.FindIndex(user => user.Name == userName);
                 if (userIndex < 0)
