@@ -12,8 +12,6 @@ using IDispatcher = VirtualDebts.Binding.IDispatcher;
 
 namespace VirtualDebts
 {
-    // TODO Add unit tests
-
     public partial class App : Application
     {
         private readonly IServiceProvider serviceProvider;

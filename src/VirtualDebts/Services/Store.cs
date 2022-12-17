@@ -1,5 +1,4 @@
 using System;
-using VirtualDebts.Models;
 
 namespace VirtualDebts.Services
 {
