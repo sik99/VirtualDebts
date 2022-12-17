@@ -1,4 +1,5 @@
-﻿using System;
+using AsyncAwaitBestPractices.MVVM;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,15 +15,20 @@ namespace VirtualDebts.Controllers
     {
         public EditUsersViewModel ViewModel { get; private set; } = new EditUsersViewModel();
 
-        public ICommand AddUserCommand { get; }
-        public ICommand RemoveUserCommand { get; }
+        public IAsyncCommand<object> AddUserCommand { get; }
+        public IAsyncCommand<object> RemoveUserCommand { get; }
         public ICommand ViewLoadedCommand { get; }
 
-        private readonly EditUsersInteractor interactor;
+        private readonly IEditUsersInteractor interactor;
         private readonly Store<AppState> store;
         private readonly ICommandFactory commandFactory;
 
-        public EditUsersController(EditUsersInteractor interactor, Store<AppState> store, ICommandFactory commandFactory, IDispatcher dispatcher) : base(dispatcher)
+        public EditUsersController(
+            IEditUsersInteractor interactor,
+            Store<AppState> store,
+            ICommandFactory commandFactory,
+            IDispatcher dispatcher)
+            : base(dispatcher)
         {
             this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
             this.store = store ?? throw new ArgumentNullException(nameof(store));

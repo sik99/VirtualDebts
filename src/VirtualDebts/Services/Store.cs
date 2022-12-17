@@ -1,5 +1,4 @@
 using System;
-using VirtualDebts.Models;
 
 namespace VirtualDebts.Services
 {
@@ -9,7 +8,7 @@ namespace VirtualDebts.Services
     public class Store<TState> where TState : ICloneable, new()
     {
         private readonly object stateLock = new object();
-        private TState state = new TState();
+        private readonly TState state = new TState();
 
         public TState GetState()
         {

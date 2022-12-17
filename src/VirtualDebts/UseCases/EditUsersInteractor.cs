@@ -7,7 +7,7 @@ using VirtualDebts.Services;
 
 namespace VirtualDebts.UseCases
 {
-    public class EditUsersInteractor
+    public class EditUsersInteractor : IEditUsersInteractor
     {
         private readonly Store<AppState> store;
         private readonly INavigationService navigationService;
@@ -22,7 +22,8 @@ namespace VirtualDebts.UseCases
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
-                await this.navigationService.ShowMessageBox(Properties.Resources.EditUsers_AddFailedMsg, Properties.Resources.EditUsers_AddWhitespaceMsg);
+                string message = Properties.Resources.EditUsers_AddWhitespaceMsg;
+                await this.navigationService.ShowMessageBox(Properties.Resources.EditUsers_AddFailedMsg, message);
                 return;
             }
 
@@ -38,7 +39,10 @@ namespace VirtualDebts.UseCases
             });
 
             if (!isSuccess)
-                await this.navigationService.ShowMessageBox(Properties.Resources.EditUsers_AddFailedMsg, string.Format(Properties.Resources.EditUsers_AddExistentMsg, userName));
+            {
+                string message = string.Format(Properties.Resources.EditUsers_AddExistentMsg, userName);
+                await this.navigationService.ShowMessageBox(Properties.Resources.EditUsers_AddFailedMsg, message);
+            }
         }
 
         // TODO RemoveUser using Guid instead of name
@@ -61,7 +65,10 @@ namespace VirtualDebts.UseCases
             });
 
             if (!isSuccess)
-                await this.navigationService.ShowMessageBox(Properties.Resources.EditUsers_RemoveFailedMsg, string.Format(Properties.Resources.EditUsers_RemoveDebtorMsg, userName));
+            {
+                string message = string.Format(Properties.Resources.EditUsers_RemoveDebtorMsg, userName);
+                await this.navigationService.ShowMessageBox(Properties.Resources.EditUsers_RemoveFailedMsg, message);
+            }
         }
     }
 }

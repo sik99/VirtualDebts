@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using VirtualDebts.Binding;
 using VirtualDebts.Controllers;
@@ -12,8 +12,6 @@ using IDispatcher = VirtualDebts.Binding.IDispatcher;
 
 namespace VirtualDebts
 {
-    // TODO Add unit tests
-
     public partial class App : Application
     {
         private readonly IServiceProvider serviceProvider;
@@ -49,7 +47,7 @@ namespace VirtualDebts
         {
             services.AddSingleton<EmptyView>();
 
-            services.AddSingleton<ICommandFactory, XamarinCommandFactory>();
+            services.AddSingleton<ICommandFactory, CommandFactory>();
             services.AddSingleton<IDispatcher, XamarinDispatcher>();
             services.AddSingleton<XamarinViewProvider>();
             services.AddSingleton<INavigationService, XamarinNavigationService>();
@@ -60,7 +58,7 @@ namespace VirtualDebts
                 new MainMenuView { BindingContext = provider.GetRequiredService<MainMenuController>() }
             );
 
-            services.AddScoped<EditUsersInteractor>();
+            services.AddScoped<IEditUsersInteractor, EditUsersInteractor>();
             services.AddScoped<EditUsersController>();
             services.AddScoped<EditUsersViewModel>();
             services.AddTransient<EditUsersView>(provider =>
