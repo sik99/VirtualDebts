@@ -187,7 +187,7 @@ namespace VirtualDebts.Controllers
         private void GivenUsers(params string[] userNames)
         {
             var users = userNames
-                .Select(userName => new User(userName))
+                .Select(userName => new User(Guid.NewGuid(), userName))
                 .ToList();
             bool isSuccess = this.givenFixture.Store.Update(appState =>
             {
@@ -203,7 +203,7 @@ namespace VirtualDebts.Controllers
         private AppState CreateAppState(IList<string> userNames)
         {
             var users = userNames
-                .Select(userName => new User(userName))
+                .Select(userName => new User(Guid.NewGuid(), userName))
                 .ToList();
             return new AppState { Users = users };
         }

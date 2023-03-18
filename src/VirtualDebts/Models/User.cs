@@ -8,9 +8,9 @@ namespace VirtualDebts.Models
         public string Name { get; set; }
         public int Balance { get; set; }
 
-        public User(string name, int balance = 0)
+        public User(Guid id, string name, int balance = 0)
         {
-            this.Id = Guid.NewGuid();
+            this.Id = id;
             this.Name = name;
             this.Balance = balance;
         }

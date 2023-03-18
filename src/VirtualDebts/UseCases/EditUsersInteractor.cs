@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
@@ -11,11 +11,13 @@ namespace VirtualDebts.UseCases
     {
         private readonly Store<AppState> store;
         private readonly INavigationService navigationService;
+        private readonly Server.IUserIdGenerator userIdGenerator;
 
-        public EditUsersInteractor(Store<AppState> store, INavigationService navigationService)
+        public EditUsersInteractor(Store<AppState> store, INavigationService navigationService, Server.IUserIdGenerator userIdGenerator)
         {
             this.store = store ?? throw new ArgumentNullException(nameof(store));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            this.userIdGenerator = userIdGenerator ?? throw new ArgumentNullException(nameof(userIdGenerator));
         }
 
         public async Task AddUser(string userName)
@@ -34,7 +36,9 @@ namespace VirtualDebts.UseCases
                 if (isUserExistent)
                     return false;
 
-                appState.Users.Add(new User(userName));
+                var userId = this.userIdGenerator.Next();
+                var user = new User(userId, userName);
+                appState.Users.Add(user);
                 return true;
             });
 

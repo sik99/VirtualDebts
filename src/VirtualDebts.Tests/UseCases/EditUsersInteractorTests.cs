@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
@@ -20,7 +21,8 @@ namespace VirtualDebts.UseCases
         {
             this.givenInstance = new EditUsersInteractor(
                 this.givenFixture.Store,
-                this.givenFixture.NavigationServiceMock.Object);
+                this.givenFixture.NavigationServiceMock.Object,
+                new Server.IdGenerator());
         }
 
         #region AddUser function tests
@@ -190,7 +192,7 @@ namespace VirtualDebts.UseCases
         private void GivenUsersWithDebts(params (string, int)[] usersAndDebts)
         {
             var users = usersAndDebts
-                .Select(userAndDebt => new User(userAndDebt.Item1, userAndDebt.Item2))
+                .Select(userAndDebt => new User(Guid.NewGuid(), userAndDebt.Item1, userAndDebt.Item2))
                 .ToList();
             bool isSuccess = this.givenFixture.Store.Update(appState =>
             {
@@ -205,7 +207,7 @@ namespace VirtualDebts.UseCases
         private void GivenUsers(params string[] userNames)
         {
             var users = userNames
-                .Select(userName => new User(userName))
+                .Select(userName => new User(Guid.NewGuid(), userName))
                 .ToList();
             bool isSuccess = this.givenFixture.Store.Update(appState =>
             {
