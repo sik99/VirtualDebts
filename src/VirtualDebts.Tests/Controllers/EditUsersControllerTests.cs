@@ -152,7 +152,7 @@ namespace VirtualDebts.Controllers
             this.givenInstance.RemoveUserCommand.Execute(userIdentity);
 
             // Then
-            this.givenFixture.EditUsersInteractorMock.Verify(mock => mock.RemoveUser(userIdentity.Name), Times.Exactly(1));
+            this.givenFixture.EditUsersInteractorMock.Verify(mock => mock.RemoveUser(userIdentity), Times.Exactly(1));
             this.givenFixture.EditUsersInteractorMock.VerifyNoOtherCalls();
         }
 
@@ -246,7 +246,7 @@ namespace VirtualDebts.Controllers
                     .Setup(mock => mock.AddUser(It.IsAny<string>()))
                     .Returns(Task.CompletedTask);
                 this.EditUsersInteractorMock
-                    .Setup(mock => mock.RemoveUser(It.IsAny<string>()))
+                    .Setup(mock => mock.RemoveUser(It.IsAny<UserIdentity>()))
                     .Returns(Task.CompletedTask);
             }
         }

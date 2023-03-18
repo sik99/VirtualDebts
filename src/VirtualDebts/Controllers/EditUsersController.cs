@@ -80,7 +80,7 @@ namespace VirtualDebts.Controllers
             UserIdentity userToRemove = CastToUserIdentity(parameter);
             if (!this.ViewModel.Users.Contains(userToRemove))
                 throw new ArgumentOutOfRangeException($"List of users does not contain user \"{userToRemove}\"");
-            await this.interactor.RemoveUser(userToRemove.Name);
+            await this.interactor.RemoveUser(userToRemove);
         }
 
         public void OnViewLoaded() => this.dispatcher?.InvokeInMainThread(this.UpdateProperties);
