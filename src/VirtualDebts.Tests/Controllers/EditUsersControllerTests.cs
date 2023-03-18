@@ -88,10 +88,23 @@ namespace VirtualDebts.Controllers
         }
 
         [TestMethod]
+        public void OnAddUser_is_disabled_for_null()
+        {
+            // Given
+            object userName = null;
+
+            // When
+            bool isAddUserEnabled = this.givenInstance.AddUserCommand.CanExecute(userName);
+
+            // Then
+            isAddUserEnabled.Should().BeFalse();
+        }
+
+        [TestMethod]
         public void OnAddUser_is_disabled_for_empty_user_name()
         {
             // Given
-            string userName = "";
+            object userName = "";
 
             // When
             bool isAddUserEnabled = this.givenInstance.AddUserCommand.CanExecute(userName);
@@ -104,7 +117,7 @@ namespace VirtualDebts.Controllers
         public void OnAddUser_is_disabled_for_whitespace_user_name()
         {
             // Given
-            string userName = "     ";
+            object userName = "     ";
 
             // When
             bool isAddUserEnabled = this.givenInstance.AddUserCommand.CanExecute(userName);
@@ -117,7 +130,7 @@ namespace VirtualDebts.Controllers
         public void OnAddUser_is_enabled_for_user_name_with_visible_characters()
         {
             // Given
-            string userName = "  visible   ";
+            object userName = "  visible   ";
 
             // When
             bool isAddUserEnabled = this.givenInstance.AddUserCommand.CanExecute(userName);
@@ -157,10 +170,23 @@ namespace VirtualDebts.Controllers
         }
 
         [TestMethod]
+        public void OnRemoveUser_is_disabled_for_null()
+        {
+            // Given
+            object user = null;
+
+            // When
+            bool isRemoveUserEnabled = this.givenInstance.RemoveUserCommand.CanExecute(user);
+
+            // Then
+            isRemoveUserEnabled.Should().BeFalse();
+        }
+
+        [TestMethod]
         public void OnRemoveUser_is_disabled_for_empty_user_name()
         {
             // Given
-            UserIdentity user = new UserIdentity(Guid.Empty, "");
+            object user = new UserIdentity(Guid.Empty, "");
 
             // When
             bool isRemoveUserEnabled = this.givenInstance.RemoveUserCommand.CanExecute(user);
@@ -173,7 +199,7 @@ namespace VirtualDebts.Controllers
         public void OnRemoveUser_is_enabled_for_nonempty_user_name()
         {
             // Given
-            UserIdentity user = new UserIdentity(Guid.Empty, "non-empty");
+            object user = new UserIdentity(Guid.Empty, "non-empty");
 
             // When
             bool isRemoveUserEnabled = this.givenInstance.RemoveUserCommand.CanExecute(user);
