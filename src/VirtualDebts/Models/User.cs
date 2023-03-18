@@ -14,5 +14,10 @@ namespace VirtualDebts.Models
             this.Name = name;
             this.Balance = balance;
         }
+
+        public UserIdentity GetIdentity()
+        {
+            return new UserIdentity(this.Id, this.Name);
+        }
     }
 }

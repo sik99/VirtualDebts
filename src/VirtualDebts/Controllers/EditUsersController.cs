@@ -41,10 +41,11 @@ namespace VirtualDebts.Controllers
             this.store.StateChanged += () => this.dispatcher?.InvokeInMainThread(this.UpdateProperties);
         }
 
-        private string CastToString(object obj) => (obj is string objString) ? objString : null;
+        private string CastToString(object obj) => obj as string;
+        private UserIdentity? CastToUserIdentity(object obj) => obj as UserIdentity?;
 
         public bool ShouldEnableAddUserButton(object userToAdd) => !string.IsNullOrWhiteSpace(CastToString(userToAdd));
-        public bool ShouldEnableRemoveUserButton(object userToAdd) => !string.IsNullOrEmpty(CastToString(userToAdd));
+        public bool ShouldEnableRemoveUserButton(object userToRemove) => !string.IsNullOrEmpty(CastToUserIdentity(userToRemove)?.Name);
 
         public async Task OnAddUser(object parameter)
         {
@@ -54,10 +55,10 @@ namespace VirtualDebts.Controllers
 
         public async Task OnRemoveUser(object parameter)
         {
-            string userToRemove = CastToString(parameter) ?? throw new ArgumentNullException(nameof(userToRemove));
-            if (!this.ViewModel.UserList.Contains(userToRemove))
+            UserIdentity userToRemove = CastToUserIdentity(parameter) ?? throw new ArgumentNullException(nameof(userToRemove));
+            if (!this.ViewModel.Users.Contains(userToRemove))
                 throw new ArgumentOutOfRangeException($"List of users does not contain user \"{userToRemove}\"");
-            await this.interactor.RemoveUser(userToRemove);
+            await this.interactor.RemoveUser(userToRemove.Name);
         }
 
         public void OnViewLoaded() => this.dispatcher?.InvokeInMainThread(this.UpdateProperties);
@@ -65,9 +66,9 @@ namespace VirtualDebts.Controllers
         private void UpdateProperties()
         {
             var users = this.store.GetState().Users;
-            this.ViewModel.UserList = users.Select(user => user.Name).ToList();
-            this.ViewModel.UserListAsString = this.ViewModel.UserList.Count > 0
-                                           ? string.Join("\n", this.ViewModel.UserList)
+            this.ViewModel.Users = users.Select(user => user.GetIdentity()).ToList();
+            this.ViewModel.UserNamesAsString = this.ViewModel.Users.Count > 0
+                                           ? string.Join("\n", this.ViewModel.Users.Select(user => user.Name))
                                            : Properties.Resources.EditUsers_UserListEmpty;
             this.NotifyPropertyChanged(null);
         }

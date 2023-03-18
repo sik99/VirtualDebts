@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using VirtualDebts.Models;
 
 namespace VirtualDebts.ViewModels
 {
     public class EditUsersViewModel
     {
-        // TODO Propagate also user Guids to ViewModel
-        public IList<string> UserList { get; set; } = new List<string>();
-        public string UserListAsString { get; set; }
+        public IList<UserIdentity> Users { get; set; } = new List<UserIdentity>();
+        public string UserNamesAsString { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿using FluentAssertions;
+using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -67,8 +67,8 @@ namespace VirtualDebts.Controllers
 
             // Then
             wasViewModelUpdated.Should().BeTrue();
-            this.givenInstance.ViewModel.UserList.Should().BeEquivalentTo(userNames);
-            this.givenInstance.ViewModel.UserListAsString.Should().Be("Alice\nBob\nCecilia");
+            this.givenInstance.ViewModel.Users.Select(user => user.Name).Should().BeEquivalentTo(userNames);
+            this.givenInstance.ViewModel.UserNamesAsString.Should().Be("Alice\nBob\nCecilia");
         }
         #endregion
 
@@ -132,14 +132,14 @@ namespace VirtualDebts.Controllers
         public void OnRemoveUser_calls_interactor_when_user_name_exists()
         {
             // Given
-            string userName = "Existing user name";
-            this.GivenUsers(userName);
+            UserIdentity userIdentity = new UserIdentity(Guid.NewGuid(), "Existing user name");
+            this.GivenUsers(userIdentity);
 
             // When
-            this.givenInstance.RemoveUserCommand.Execute(userName);
+            this.givenInstance.RemoveUserCommand.Execute(userIdentity);
 
             // Then
-            this.givenFixture.EditUsersInteractorMock.Verify(mock => mock.RemoveUser(userName), Times.Exactly(1));
+            this.givenFixture.EditUsersInteractorMock.Verify(mock => mock.RemoveUser(userIdentity.Name), Times.Exactly(1));
             this.givenFixture.EditUsersInteractorMock.VerifyNoOtherCalls();
         }
 
@@ -147,10 +147,10 @@ namespace VirtualDebts.Controllers
         public async Task OnRemoveUser_throws_when_user_name_does_not_exist()
         {
             // Given
-            string userName = "Non-existing user name";
+            UserIdentity userIdentity = new UserIdentity(Guid.NewGuid(), "Non-existing user name");
 
             // When
-            Func<Task> action = () => this.givenInstance.RemoveUserCommand.ExecuteAsync(userName);
+            Func<Task> action = () => this.givenInstance.RemoveUserCommand.ExecuteAsync(userIdentity);
 
             // Then
             await action.Should().ThrowAsync<ArgumentOutOfRangeException>();
@@ -160,10 +160,10 @@ namespace VirtualDebts.Controllers
         public void OnRemoveUser_is_disabled_for_empty_user_name()
         {
             // Given
-            string userName = "";
+            UserIdentity user = new UserIdentity(Guid.Empty, "");
 
             // When
-            bool isRemoveUserEnabled = this.givenInstance.RemoveUserCommand.CanExecute(userName);
+            bool isRemoveUserEnabled = this.givenInstance.RemoveUserCommand.CanExecute(user);
 
             // Then
             isRemoveUserEnabled.Should().BeFalse();
@@ -173,10 +173,10 @@ namespace VirtualDebts.Controllers
         public void OnRemoveUser_is_enabled_for_nonempty_user_name()
         {
             // Given
-            string userName = "non-empty";
+            UserIdentity user = new UserIdentity(Guid.Empty, "non-empty");
 
             // When
-            bool isRemoveUserEnabled = this.givenInstance.RemoveUserCommand.CanExecute(userName);
+            bool isRemoveUserEnabled = this.givenInstance.RemoveUserCommand.CanExecute(user);
 
             // Then
             isRemoveUserEnabled.Should().BeTrue();
@@ -184,10 +184,10 @@ namespace VirtualDebts.Controllers
         #endregion
 
         #region Given
-        private void GivenUsers(params string[] userNames)
+        private void GivenUsers(params UserIdentity[] userIdentities)
         {
-            var users = userNames
-                .Select(userName => new User(Guid.NewGuid(), userName))
+            var users = userIdentities
+                .Select(identity => new User(identity.Id, identity.Name))
                 .ToList();
             bool isSuccess = this.givenFixture.Store.Update(appState =>
             {
@@ -196,8 +196,8 @@ namespace VirtualDebts.Controllers
             });
 
             isSuccess.Should().BeTrue();
-            this.givenFixture.Store.GetState().Users.Count.Should().Be(userNames.Length);
-            this.givenInstance.ViewModel.UserList.Should().BeEquivalentTo(userNames);
+            this.givenFixture.Store.GetState().Users.Count.Should().Be(userIdentities.Length);
+            this.givenInstance.ViewModel.Users.Should().BeEquivalentTo(userIdentities);
         }
 
         private AppState CreateAppState(IList<string> userNames)
