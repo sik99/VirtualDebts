@@ -16,9 +16,9 @@
         <Entry x:Name="UserToAdd" />
         <Button Text="{x:Static resources:Resources.EditUsers_AddUserButton}" Command="{Binding AddUserCommand}" CommandParameter="{Binding Source={x:Reference UserToAdd}, Path=Text}" CornerRadius="10" TextTransform="None" />
         <Label Text="{x:Static resources:Resources.EditUsers_RemoveUserLabel}" Margin="0,30,0,0" FontAttributes="Bold" />
-        <Picker x:Name="UserToRemove" ItemsSource="{Binding ViewModel.UserList}"/>
+        <Picker x:Name="UserToRemove" ItemsSource="{Binding ViewModel.Users}" ItemDisplayBinding="{Binding Name}"/>
         <Button Text="{x:Static resources:Resources.EditUsers_RemoveUserButton}" Command="{Binding RemoveUserCommand}" CommandParameter="{Binding Source={x:Reference UserToRemove}, Path=SelectedItem}" CornerRadius="10" TextTransform="None" />
         <Label Text="{x:Static resources:Resources.EditUsers_UserListLabel}" Margin="0,30,0,0" FontAttributes="Bold" />
-        <Label Text="{Binding ViewModel.UserListAsString}" Margin="15,0,0,0" />
+        <Label Text="{Binding ViewModel.UserNamesAsString}" Margin="15,0,0,0" />
     </StackLayout>
 </ContentPage>

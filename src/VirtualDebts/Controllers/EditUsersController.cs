@@ -41,21 +41,44 @@ namespace VirtualDebts.Controllers
             this.store.StateChanged += () => this.dispatcher?.InvokeInMainThread(this.UpdateProperties);
         }
 
-        private string CastToString(object obj) => (obj is string objString) ? objString : null;
+        private string CastToString(object obj)
+        {
+            return obj as string ?? throw new ArgumentNullException($"{nameof(obj)} must be of type string");
+        }
 
-        public bool ShouldEnableAddUserButton(object userToAdd) => !string.IsNullOrWhiteSpace(CastToString(userToAdd));
-        public bool ShouldEnableRemoveUserButton(object userToAdd) => !string.IsNullOrEmpty(CastToString(userToAdd));
+        private UserIdentity CastToUserIdentity(object obj)
+        {
+            return obj as UserIdentity? ?? throw new ArgumentNullException($"{nameof(obj)} must be of type {nameof(UserIdentity)}");
+        }
+
+        public bool ShouldEnableAddUserButton(object userToAdd)
+        {
+            if (userToAdd is null)
+                return false;
+
+            string userName = CastToString(userToAdd);
+            return !string.IsNullOrWhiteSpace(userName);
+        }
+
+        public bool ShouldEnableRemoveUserButton(object userToRemove)
+        {
+            if (userToRemove is null)
+                return false;
+
+            string userName = CastToUserIdentity(userToRemove).Name;
+            return !string.IsNullOrEmpty(userName);
+        }
 
         public async Task OnAddUser(object parameter)
         {
-            string userToAdd = CastToString(parameter) ?? throw new ArgumentNullException(nameof(userToAdd));
+            string userToAdd = CastToString(parameter);
             await interactor.AddUser(userToAdd);
         }
 
         public async Task OnRemoveUser(object parameter)
         {
-            string userToRemove = CastToString(parameter) ?? throw new ArgumentNullException(nameof(userToRemove));
-            if (!this.ViewModel.UserList.Contains(userToRemove))
+            UserIdentity userToRemove = CastToUserIdentity(parameter);
+            if (!this.ViewModel.Users.Contains(userToRemove))
                 throw new ArgumentOutOfRangeException($"List of users does not contain user \"{userToRemove}\"");
             await this.interactor.RemoveUser(userToRemove);
         }
@@ -65,9 +88,9 @@ namespace VirtualDebts.Controllers
         private void UpdateProperties()
         {
             var users = this.store.GetState().Users;
-            this.ViewModel.UserList = users.Select(user => user.Name).ToList();
-            this.ViewModel.UserListAsString = this.ViewModel.UserList.Count > 0
-                                           ? string.Join("\n", this.ViewModel.UserList)
+            this.ViewModel.Users = users.Select(user => user.GetIdentity()).ToList();
+            this.ViewModel.UserNamesAsString = this.ViewModel.Users.Count > 0
+                                           ? string.Join("\n", this.ViewModel.Users.Select(user => user.Name))
                                            : Properties.Resources.EditUsers_UserListEmpty;
             this.NotifyPropertyChanged(null);
         }

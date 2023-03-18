@@ -64,6 +64,8 @@ namespace VirtualDebts
             services.AddTransient<EditUsersView>(provider =>
                 new EditUsersView { BindingContext = provider.GetRequiredService<EditUsersController>() }
             );
+
+            services.AddSingleton<Server.IUserIdGenerator, Server.IdGenerator>();
         }
     }
 }
