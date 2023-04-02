@@ -49,9 +49,9 @@ namespace VirtualDebts
             services.AddSingleton<EmptyView>();
 
             services.AddSingleton<ICommandFactory, CommandFactory>();
-            services.AddSingleton<IDispatcher, XamarinDispatcher>();
-            services.AddSingleton<XamarinViewProvider>();
-            services.AddSingleton<INavigationService, XamarinNavigationService>();
+            services.AddSingleton<IDispatcher, MauiDispatcher>();
+            services.AddSingleton<MauiViewProvider>();
+            services.AddSingleton<INavigationService, MauiNavigationService>();
             services.AddSingleton<Store<AppState>>();
 
             services.AddSingleton<MainMenuController>();

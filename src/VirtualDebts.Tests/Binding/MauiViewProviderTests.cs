@@ -7,15 +7,15 @@ using System;
 namespace VirtualDebts.Binding
 {
     [TestClass()]
-    public class XamarinViewProviderTests
+    public class MauiViewProviderTests
     {
-        private XamarinViewProvider givenInstance;
+        private MauiViewProvider givenInstance;
         private readonly GivenFixture givenFixture = new GivenFixture();
 
         [TestInitialize]
         public void TestInitialize()
         {
-            this.givenInstance = new XamarinViewProvider(
+            this.givenInstance = new MauiViewProvider(
                 this.givenFixture.ServiceProviderMock.Object);
         }
 
