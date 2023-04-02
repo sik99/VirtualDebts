@@ -1,6 +1,7 @@
 ﻿using Microsoft.Maui.Controls;
 using System;
 using System.Threading.Tasks;
+using VirtualDebts.Resources.Strings;
 
 namespace VirtualDebts.Binding
 {
@@ -20,7 +21,7 @@ namespace VirtualDebts.Binding
 
         public async Task ShowMessageBox(string title, string message)
         {
-            await Application.Current.MainPage.DisplayAlert(title, message, Properties.Resources.MessageBox_OkButton);
+            await Application.Current.MainPage.DisplayAlert(title, message, AppResources.MessageBox_OkButton);
         }
     }
 }

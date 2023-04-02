@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using VirtualDebts.Binding;
 using VirtualDebts.Models;
+using VirtualDebts.Resources.Strings;
 using VirtualDebts.Services;
 using VirtualDebts.UseCases;
 using VirtualDebts.ViewModels;
@@ -93,7 +94,7 @@ namespace VirtualDebts.Controllers
             this.ViewModel.Users = users.Select(user => user.GetIdentity()).ToList();
             this.ViewModel.UserNamesAsString = this.ViewModel.Users.Count > 0
                                            ? string.Join("\n", this.ViewModel.Users.Select(user => user.Name))
-                                           : Properties.Resources.EditUsers_UserListEmpty;
+                                           : AppResources.EditUsers_UserListEmpty;
             this.NotifyPropertyChanged(null);
         }
     }

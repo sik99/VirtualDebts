@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
 using VirtualDebts.Models;
+using VirtualDebts.Resources.Strings;
 using VirtualDebts.Services;
 
 namespace VirtualDebts.UseCases
@@ -24,8 +25,8 @@ namespace VirtualDebts.UseCases
         {
             if (string.IsNullOrWhiteSpace(userName))
             {
-                string message = Properties.Resources.EditUsers_AddWhitespaceMsg;
-                await this.navigationService.ShowMessageBox(Properties.Resources.EditUsers_AddFailedMsg, message);
+                string message = AppResources.EditUsers_AddWhitespaceMsg;
+                await this.navigationService.ShowMessageBox(AppResources.EditUsers_AddFailedMsg, message);
                 return;
             }
 
@@ -44,8 +45,8 @@ namespace VirtualDebts.UseCases
 
             if (!isSuccess)
             {
-                string message = string.Format(Properties.Resources.EditUsers_AddExistentMsg, userName);
-                await this.navigationService.ShowMessageBox(Properties.Resources.EditUsers_AddFailedMsg, message);
+                string message = string.Format(AppResources.EditUsers_AddExistentMsg, userName);
+                await this.navigationService.ShowMessageBox(AppResources.EditUsers_AddFailedMsg, message);
             }
         }
 
@@ -69,8 +70,8 @@ namespace VirtualDebts.UseCases
 
             if (!isSuccess)
             {
-                string message = string.Format(Properties.Resources.EditUsers_RemoveDebtorMsg, userIdentity.Name);
-                await this.navigationService.ShowMessageBox(Properties.Resources.EditUsers_RemoveFailedMsg, message);
+                string message = string.Format(AppResources.EditUsers_RemoveDebtorMsg, userIdentity.Name);
+                await this.navigationService.ShowMessageBox(AppResources.EditUsers_RemoveFailedMsg, message);
             }
         }
     }

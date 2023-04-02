@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
 using VirtualDebts.Models;
+using VirtualDebts.Resources.Strings;
 using VirtualDebts.Services;
 
 namespace VirtualDebts.UseCases
@@ -92,7 +93,7 @@ namespace VirtualDebts.UseCases
 
             // Then
             this.ThenUsersCountShouldBe(1);
-            this.ThenAddUserFailedMessagePopsUp(string.Format(Properties.Resources.EditUsers_AddExistentMsg, userIdentity.Name));
+            this.ThenAddUserFailedMessagePopsUp(string.Format(AppResources.EditUsers_AddExistentMsg, userIdentity.Name));
             this.givenFixture.NavigationServiceMock.VerifyNoOtherCalls();
         }
 
@@ -107,7 +108,7 @@ namespace VirtualDebts.UseCases
 
             // Then
             this.ThenUsersShouldBeEmpty();
-            this.ThenAddUserFailedMessagePopsUp(Properties.Resources.EditUsers_AddWhitespaceMsg);
+            this.ThenAddUserFailedMessagePopsUp(AppResources.EditUsers_AddWhitespaceMsg);
             this.givenFixture.NavigationServiceMock.VerifyNoOtherCalls();
         }
         #endregion
@@ -141,7 +142,7 @@ namespace VirtualDebts.UseCases
             // Then
             this.ThenUsersCountShouldBe(1);
             this.ThenUsersShouldContain(userIdentity);
-            this.ThenRemoveUserFailedMessagePopsUp(string.Format(Properties.Resources.EditUsers_RemoveDebtorMsg, userIdentity.Name));
+            this.ThenRemoveUserFailedMessagePopsUp(string.Format(AppResources.EditUsers_RemoveDebtorMsg, userIdentity.Name));
             this.givenFixture.NavigationServiceMock.VerifyNoOtherCalls();
         }
 
@@ -205,14 +206,14 @@ namespace VirtualDebts.UseCases
         private void ThenAddUserFailedMessagePopsUp(string message)
         {
             this.givenFixture.NavigationServiceMock.Verify(
-                mock => mock.ShowMessageBox(Properties.Resources.EditUsers_AddFailedMsg, message),
+                mock => mock.ShowMessageBox(AppResources.EditUsers_AddFailedMsg, message),
                 Times.Exactly(1));
         }
 
         private void ThenRemoveUserFailedMessagePopsUp(string message)
         {
             this.givenFixture.NavigationServiceMock.Verify(
-                mock => mock.ShowMessageBox(Properties.Resources.EditUsers_RemoveFailedMsg, message),
+                mock => mock.ShowMessageBox(AppResources.EditUsers_RemoveFailedMsg, message),
                 Times.Exactly(1));
         }
         #endregion

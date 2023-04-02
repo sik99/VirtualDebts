@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:resources="clr-namespace:VirtualDebts.Properties"
+             xmlns:lang="clr-namespace:VirtualDebts.Resources.Strings"
              x:Class="VirtualDebts.Views.MainMenuView"
-             Title="{x:Static resources:Resources.AppName}"
+             Title="{x:Static lang:AppResources.AppName}"
              >
 
     <StackLayout Margin="0,30">
-        <Button Text="{x:Static resources:Resources.EditUsers_PageTitle}" Command="{Binding EditUsersCommand}" IsEnabled="{Binding CanNavigate}" CornerRadius="10" Margin="25,10" FontSize="22" TextTransform="None" VerticalOptions="FillAndExpand" />
-        <Button Text="{x:Static resources:Resources.NewPayment_PageTitle}" Command="{Binding NewPaymentCommand}" IsEnabled="{Binding CanNavigate}" CornerRadius="10" Margin="25,10" FontSize="22" TextTransform="None" VerticalOptions="FillAndExpand" />
-        <Button Text="{x:Static resources:Resources.CurrentBalance_PageTitle}" Command="{Binding CurrentBalanceCommand}" IsEnabled="{Binding CanNavigate}" CornerRadius="10" Margin="25,10" FontSize="22" TextTransform="None" VerticalOptions="FillAndExpand" />
+        <Button Text="{x:Static lang:AppResources.EditUsers_PageTitle}" Command="{Binding EditUsersCommand}" IsEnabled="{Binding CanNavigate}" CornerRadius="10" Margin="25,10" FontSize="22" TextTransform="None" VerticalOptions="FillAndExpand" />
+        <Button Text="{x:Static lang:AppResources.NewPayment_PageTitle}" Command="{Binding NewPaymentCommand}" IsEnabled="{Binding CanNavigate}" CornerRadius="10" Margin="25,10" FontSize="22" TextTransform="None" VerticalOptions="FillAndExpand" />
+        <Button Text="{x:Static lang:AppResources.CurrentBalance_PageTitle}" Command="{Binding CurrentBalanceCommand}" IsEnabled="{Binding CanNavigate}" CornerRadius="10" Margin="25,10" FontSize="22" TextTransform="None" VerticalOptions="FillAndExpand" />
     </StackLayout>
 </ContentPage>
