@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui;
+using Microsoft.Maui.Controls;
 using System;
 using VirtualDebts.Views;
-using Xamarin.Forms;
 
 namespace VirtualDebts.Binding
 {

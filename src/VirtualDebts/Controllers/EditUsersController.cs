@@ -9,6 +9,8 @@ using VirtualDebts.Services;
 using VirtualDebts.UseCases;
 using VirtualDebts.ViewModels;
 
+using IDispatcher = VirtualDebts.Binding.IDispatcher;
+
 namespace VirtualDebts.Controllers
 {
     public class EditUsersController : ControllerBase

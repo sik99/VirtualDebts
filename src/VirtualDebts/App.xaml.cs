@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Controls;
 using System;
 using VirtualDebts.Binding;
 using VirtualDebts.Controllers;
@@ -7,7 +8,7 @@ using VirtualDebts.Services;
 using VirtualDebts.UseCases;
 using VirtualDebts.ViewModels;
 using VirtualDebts.Views;
-using Xamarin.Forms;
+
 using IDispatcher = VirtualDebts.Binding.IDispatcher;
 
 namespace VirtualDebts

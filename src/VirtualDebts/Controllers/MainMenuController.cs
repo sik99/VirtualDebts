@@ -3,6 +3,8 @@ using System;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
 
+using IDispatcher = VirtualDebts.Binding.IDispatcher;
+
 namespace VirtualDebts.Controllers
 {
     public class MainMenuController : ControllerBase
