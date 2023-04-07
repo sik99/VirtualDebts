@@ -6,7 +6,6 @@ using VirtualDebts.Controllers;
 using VirtualDebts.Models;
 using VirtualDebts.Services;
 using VirtualDebts.UseCases;
-using VirtualDebts.ViewModels;
 using VirtualDebts.Views;
 
 using IDispatcher = VirtualDebts.Binding.IDispatcher;
@@ -54,18 +53,12 @@ namespace VirtualDebts
             services.AddSingleton<INavigationService, MauiNavigationService>();
             services.AddSingleton<Store<AppState>>();
 
+            services.AddSingleton<MainMenuView>();
             services.AddSingleton<MainMenuController>();
-            services.AddSingleton<MainMenuView>(provider =>
-                new MainMenuView { BindingContext = provider.GetRequiredService<MainMenuController>() }
-            );
 
-            services.AddScoped<IEditUsersInteractor, EditUsersInteractor>();
-            services.AddScoped<EditUsersController>();
-            services.AddScoped<EditUsersViewModel>();
-            services.AddTransient<EditUsersView>(provider =>
-                new EditUsersView { BindingContext = provider.GetRequiredService<EditUsersController>() }
-            );
-
+            services.AddTransient<EditUsersView>();
+            services.AddTransient<EditUsersController>();
+            services.AddTransient<IEditUsersInteractor, EditUsersInteractor>();
             services.AddSingleton<Server.IUserIdGenerator, Server.IdGenerator>();
         }
     }
