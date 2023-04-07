@@ -1,33 +1,32 @@
 using System;
 
-namespace VirtualDebts.Services
+namespace VirtualDebts.Services;
+
+public delegate void StateChangedHandler();
+public delegate bool StateUpdater<TState>(TState state);
+
+public class Store<TState> where TState : ICloneable, new()
 {
-    public delegate void StateChangedHandler();
-    public delegate bool StateUpdater<TState>(TState state);
+    private readonly object stateLock = new object();
+    private readonly TState state = new TState();
 
-    public class Store<TState> where TState : ICloneable, new()
+    public TState GetState()
     {
-        private readonly object stateLock = new object();
-        private readonly TState state = new TState();
-
-        public TState GetState()
+        lock (this.stateLock)
         {
-            lock (this.stateLock)
-            {
-                return (TState)this.state.Clone();
-            }
+            return (TState)this.state.Clone();
         }
-
-        public bool Update(StateUpdater<TState> transform)
-        {
-            lock (this.stateLock)
-            {
-                bool isSuccess = transform(this.state);
-                this.StateChanged?.Invoke();
-                return isSuccess;
-            }
-        }
-
-        public event StateChangedHandler StateChanged;
     }
+
+    public bool Update(StateUpdater<TState> transform)
+    {
+        lock (this.stateLock)
+        {
+            bool isSuccess = transform(this.state);
+            this.StateChanged?.Invoke();
+            return isSuccess;
+        }
+    }
+
+    public event StateChangedHandler StateChanged;
 }

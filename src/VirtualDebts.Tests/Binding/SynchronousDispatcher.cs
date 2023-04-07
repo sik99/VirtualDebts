@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace VirtualDebts.Binding
+namespace VirtualDebts.Binding;
+
+public class SynchronousDispatcher : IDispatcher
 {
-    public class SynchronousDispatcher : IDispatcher
+    public void InvokeInMainThread(Action action)
     {
-        public void InvokeInMainThread(Action action)
-        {
-            action.Invoke();
-        }
+        action.Invoke();
     }
 }

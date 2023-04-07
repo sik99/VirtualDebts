@@ -12,90 +12,89 @@ using VirtualDebts.ViewModels;
 
 using IDispatcher = VirtualDebts.Binding.IDispatcher;
 
-namespace VirtualDebts.Controllers
+namespace VirtualDebts.Controllers;
+
+public class EditUsersController : ControllerBase
 {
-    public class EditUsersController : ControllerBase
+    public EditUsersViewModel ViewModel { get; private set; } = new EditUsersViewModel();
+
+    public IAsyncCommand<object> AddUserCommand { get; }
+    public IAsyncCommand<object> RemoveUserCommand { get; }
+    public ICommand ViewLoadedCommand { get; }
+
+    private readonly IEditUsersInteractor interactor;
+    private readonly Store<AppState> store;
+    private readonly ICommandFactory commandFactory;
+
+    public EditUsersController(
+        IEditUsersInteractor interactor,
+        Store<AppState> store,
+        ICommandFactory commandFactory,
+        IDispatcher dispatcher)
+        : base(dispatcher)
     {
-        public EditUsersViewModel ViewModel { get; private set; } = new EditUsersViewModel();
+        this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
+        this.store = store ?? throw new ArgumentNullException(nameof(store));
+        this.commandFactory = commandFactory ?? throw new ArgumentNullException(nameof(commandFactory));
 
-        public IAsyncCommand<object> AddUserCommand { get; }
-        public IAsyncCommand<object> RemoveUserCommand { get; }
-        public ICommand ViewLoadedCommand { get; }
+        this.AddUserCommand = this.commandFactory.CreateAsync(this.OnAddUser, this.ShouldEnableAddUserButton);
+        this.RemoveUserCommand = this.commandFactory.CreateAsync(this.OnRemoveUser, this.ShouldEnableRemoveUserButton);
+        this.ViewLoadedCommand = this.commandFactory.Create(this.OnViewLoaded);
 
-        private readonly IEditUsersInteractor interactor;
-        private readonly Store<AppState> store;
-        private readonly ICommandFactory commandFactory;
+        this.store.StateChanged += () => this.dispatcher?.InvokeInMainThread(this.UpdateProperties);
+    }
 
-        public EditUsersController(
-            IEditUsersInteractor interactor,
-            Store<AppState> store,
-            ICommandFactory commandFactory,
-            IDispatcher dispatcher)
-            : base(dispatcher)
-        {
-            this.interactor = interactor ?? throw new ArgumentNullException(nameof(interactor));
-            this.store = store ?? throw new ArgumentNullException(nameof(store));
-            this.commandFactory = commandFactory ?? throw new ArgumentNullException(nameof(commandFactory));
+    private string CastToString(object obj)
+    {
+        return obj as string ?? throw new ArgumentNullException($"{nameof(obj)} must be of type string");
+    }
 
-            this.AddUserCommand = this.commandFactory.CreateAsync(this.OnAddUser, this.ShouldEnableAddUserButton);
-            this.RemoveUserCommand = this.commandFactory.CreateAsync(this.OnRemoveUser, this.ShouldEnableRemoveUserButton);
-            this.ViewLoadedCommand = this.commandFactory.Create(this.OnViewLoaded);
+    private UserIdentity CastToUserIdentity(object obj)
+    {
+        return obj as UserIdentity? ?? throw new ArgumentNullException($"{nameof(obj)} must be of type {nameof(UserIdentity)}");
+    }
 
-            this.store.StateChanged += () => this.dispatcher?.InvokeInMainThread(this.UpdateProperties);
-        }
+    public bool ShouldEnableAddUserButton(object userToAdd)
+    {
+        if (userToAdd is null)
+            return false;
 
-        private string CastToString(object obj)
-        {
-            return obj as string ?? throw new ArgumentNullException($"{nameof(obj)} must be of type string");
-        }
+        string userName = CastToString(userToAdd);
+        return !string.IsNullOrWhiteSpace(userName);
+    }
 
-        private UserIdentity CastToUserIdentity(object obj)
-        {
-            return obj as UserIdentity? ?? throw new ArgumentNullException($"{nameof(obj)} must be of type {nameof(UserIdentity)}");
-        }
+    public bool ShouldEnableRemoveUserButton(object userToRemove)
+    {
+        if (userToRemove is null)
+            return false;
 
-        public bool ShouldEnableAddUserButton(object userToAdd)
-        {
-            if (userToAdd is null)
-                return false;
+        string userName = CastToUserIdentity(userToRemove).Name;
+        return !string.IsNullOrEmpty(userName);
+    }
 
-            string userName = CastToString(userToAdd);
-            return !string.IsNullOrWhiteSpace(userName);
-        }
+    public async Task OnAddUser(object parameter)
+    {
+        string userToAdd = CastToString(parameter);
+        await interactor.AddUser(userToAdd);
+    }
 
-        public bool ShouldEnableRemoveUserButton(object userToRemove)
-        {
-            if (userToRemove is null)
-                return false;
+    public async Task OnRemoveUser(object parameter)
+    {
+        UserIdentity userToRemove = CastToUserIdentity(parameter);
+        if (!this.ViewModel.Users.Contains(userToRemove))
+            throw new ArgumentOutOfRangeException($"List of users does not contain user \"{userToRemove}\"");
+        await this.interactor.RemoveUser(userToRemove);
+    }
 
-            string userName = CastToUserIdentity(userToRemove).Name;
-            return !string.IsNullOrEmpty(userName);
-        }
+    public void OnViewLoaded() => this.dispatcher?.InvokeInMainThread(this.UpdateProperties);
 
-        public async Task OnAddUser(object parameter)
-        {
-            string userToAdd = CastToString(parameter);
-            await interactor.AddUser(userToAdd);
-        }
-
-        public async Task OnRemoveUser(object parameter)
-        {
-            UserIdentity userToRemove = CastToUserIdentity(parameter);
-            if (!this.ViewModel.Users.Contains(userToRemove))
-                throw new ArgumentOutOfRangeException($"List of users does not contain user \"{userToRemove}\"");
-            await this.interactor.RemoveUser(userToRemove);
-        }
-
-        public void OnViewLoaded() => this.dispatcher?.InvokeInMainThread(this.UpdateProperties);
-
-        private void UpdateProperties()
-        {
-            var users = this.store.GetState().Users;
-            this.ViewModel.Users = users.Select(user => user.GetIdentity()).ToList();
-            this.ViewModel.UserNamesAsString = this.ViewModel.Users.Count > 0
-                                           ? string.Join("\n", this.ViewModel.Users.Select(user => user.Name))
-                                           : AppResources.EditUsers_UserListEmpty;
-            this.NotifyPropertyChanged(null);
-        }
+    private void UpdateProperties()
+    {
+        var users = this.store.GetState().Users;
+        this.ViewModel.Users = users.Select(user => user.GetIdentity()).ToList();
+        this.ViewModel.UserNamesAsString = this.ViewModel.Users.Count > 0
+                                       ? string.Join("\n", this.ViewModel.Users.Select(user => user.Name))
+                                       : AppResources.EditUsers_UserListEmpty;
+        this.NotifyPropertyChanged(null);
     }
 }
