@@ -10,7 +10,7 @@ namespace VirtualDebts.Services;
 [TestClass]
 public class StoreTests
 {
-    private readonly Store<TestState> givenInstance = new Store<TestState>();
+    private readonly Store<TestState> givenInstance = new();
 
     #region Update function tests
     [TestMethod]

@@ -18,7 +18,7 @@ namespace VirtualDebts.Controllers;
 public class EditUsersControllerTests
 {
     private EditUsersController givenInstance;
-    private readonly GivenFixture givenFixture = new GivenFixture();
+    private readonly GivenFixture givenFixture = new();
 
     [TestInitialize]
     public void TestInitialize()
@@ -145,7 +145,7 @@ public class EditUsersControllerTests
     public void OnRemoveUser_calls_interactor_when_user_name_exists()
     {
         // Given
-        UserIdentity userIdentity = new UserIdentity(Guid.NewGuid(), "Existing user name");
+        UserIdentity userIdentity = new(Guid.NewGuid(), "Existing user name");
         this.GivenUsers(userIdentity);
 
         // When
@@ -160,7 +160,7 @@ public class EditUsersControllerTests
     public async Task OnRemoveUser_throws_when_user_name_does_not_exist()
     {
         // Given
-        UserIdentity userIdentity = new UserIdentity(Guid.NewGuid(), "Non-existing user name");
+        UserIdentity userIdentity = new(Guid.NewGuid(), "Non-existing user name");
 
         // When
         Func<Task> action = () => this.givenInstance.RemoveUserCommand.ExecuteAsync(userIdentity);
@@ -236,9 +236,9 @@ public class EditUsersControllerTests
 
     internal class GivenFixture
     {
-        public readonly Mock<IEditUsersInteractor> EditUsersInteractorMock = new Mock<IEditUsersInteractor>(MockBehavior.Strict);
-        public readonly SynchronousDispatcher Dispatcher = new SynchronousDispatcher();
-        public Store<AppState> Store = new Store<AppState>();
+        public readonly Mock<IEditUsersInteractor> EditUsersInteractorMock = new(MockBehavior.Strict);
+        public readonly SynchronousDispatcher Dispatcher = new();
+        public Store<AppState> Store = new();
 
         public GivenFixture()
         {

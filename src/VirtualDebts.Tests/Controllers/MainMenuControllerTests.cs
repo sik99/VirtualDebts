@@ -13,7 +13,7 @@ namespace VirtualDebts.Controllers;
 public class MainMenuControllerTests
 {
     private MainMenuController givenInstance;
-    private readonly GivenFixture givenFixture = new GivenFixture();
+    private readonly GivenFixture givenFixture = new();
 
     [TestInitialize]
     public void TestInitialize()
@@ -141,8 +141,8 @@ public class MainMenuControllerTests
 
     internal class GivenFixture
     {
-        public readonly Mock<INavigationService> NavigationServiceMock = new Mock<INavigationService>(MockBehavior.Strict);
-        public readonly SynchronousDispatcher Dispatcher = new SynchronousDispatcher();
+        public readonly Mock<INavigationService> NavigationServiceMock = new(MockBehavior.Strict);
+        public readonly SynchronousDispatcher Dispatcher = new();
 
         public GivenFixture()
         {

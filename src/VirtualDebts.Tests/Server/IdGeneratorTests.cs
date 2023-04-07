@@ -6,7 +6,7 @@ namespace VirtualDebts.Server;
 [TestClass]
 public class IdGeneratorTests
 {
-    private readonly IdGenerator givenInstance = new IdGenerator();
+    private readonly IdGenerator givenInstance = new();
 
     #region Next function tests
     [TestMethod]

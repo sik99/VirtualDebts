@@ -15,7 +15,7 @@ namespace VirtualDebts.UseCases;
 public class EditUsersInteractorTests
 {
     private EditUsersInteractor givenInstance;
-    private readonly GivenFixture givenFixture = new GivenFixture();
+    private readonly GivenFixture givenFixture = new();
 
     [TestInitialize]
     public void TestInitialize()
@@ -48,7 +48,7 @@ public class EditUsersInteractorTests
     public async Task AddUser_adds_a_further_user()
     {
         // Given
-        UserIdentity user1 = new UserIdentity(Guid.NewGuid(), "User 1");
+        UserIdentity user1 = new(Guid.NewGuid(), "User 1");
         this.GivenUsers(user1);
 
         string user2Name = "User 2";
@@ -85,7 +85,7 @@ public class EditUsersInteractorTests
     public async Task AddUser_shows_message_box_for_duplicate_user_name()
     {
         // Given
-        UserIdentity userIdentity = new UserIdentity(Guid.NewGuid(), "Test user");
+        UserIdentity userIdentity = new(Guid.NewGuid(), "Test user");
         this.GivenUsers(userIdentity);
 
         // When
@@ -118,7 +118,7 @@ public class EditUsersInteractorTests
     public async Task RemoveUser_removes_user_with_zero_balance()
     {
         // Given
-        UserIdentity userIdentity = new UserIdentity(Guid.NewGuid(), "Test user");
+        UserIdentity userIdentity = new(Guid.NewGuid(), "Test user");
         this.GivenUsersWithDebts((userIdentity, 0));
 
         // When
@@ -133,7 +133,7 @@ public class EditUsersInteractorTests
     public async Task RemoveUser_shows_message_box_when_user_balance_is_nonzero()
     {
         // Given
-        UserIdentity userIdentity = new UserIdentity(Guid.NewGuid(), "Test user");
+        UserIdentity userIdentity = new(Guid.NewGuid(), "Test user");
         this.GivenUsersWithDebts((userIdentity, 100));
 
         // When
@@ -150,9 +150,9 @@ public class EditUsersInteractorTests
     public async Task RemoveUser_does_nothing_for_nonexisting_user()
     {
         // Given
-        UserIdentity realUser = new UserIdentity(Guid.NewGuid(), "Real user");
+        UserIdentity realUser = new(Guid.NewGuid(), "Real user");
         this.GivenUsers(realUser);
-        UserIdentity nonexistingUser = new UserIdentity(Guid.NewGuid(), "Non-existing user");
+        UserIdentity nonexistingUser = new(Guid.NewGuid(), "Non-existing user");
 
         // When
         await this.givenInstance.RemoveUser(nonexistingUser);
@@ -168,9 +168,9 @@ public class EditUsersInteractorTests
     {
         // Given
         string sameName = "Same name";
-        UserIdentity user1Identity = new UserIdentity(Guid.NewGuid(), sameName);
-        UserIdentity user2Identity = new UserIdentity(Guid.NewGuid(), sameName);
-        UserIdentity user3Identity = new UserIdentity(Guid.NewGuid(), sameName);
+        UserIdentity user1Identity = new(Guid.NewGuid(), sameName);
+        UserIdentity user2Identity = new(Guid.NewGuid(), sameName);
+        UserIdentity user3Identity = new(Guid.NewGuid(), sameName);
         this.GivenUsers(user1Identity, user2Identity, user3Identity);
 
         // When
@@ -258,9 +258,9 @@ public class EditUsersInteractorTests
 
     internal class GivenFixture
     {
-        public readonly Mock<INavigationService> NavigationServiceMock = new Mock<INavigationService>(MockBehavior.Strict);
-        public readonly Mock<Server.IUserIdGenerator> UserIdGeneratorMock = new Mock<Server.IUserIdGenerator>(MockBehavior.Strict);
-        public Store<AppState> Store = new Store<AppState>();
+        public readonly Mock<INavigationService> NavigationServiceMock = new(MockBehavior.Strict);
+        public readonly Mock<Server.IUserIdGenerator> UserIdGeneratorMock = new(MockBehavior.Strict);
+        public Store<AppState> Store = new();
 
         public GivenFixture()
         {

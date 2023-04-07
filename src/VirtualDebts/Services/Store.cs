@@ -7,8 +7,8 @@ public delegate bool StateUpdater<TState>(TState state);
 
 public class Store<TState> where TState : ICloneable, new()
 {
-    private readonly object stateLock = new object();
-    private readonly TState state = new TState();
+    private readonly object stateLock = new();
+    private readonly TState state = new();
 
     public TState GetState()
     {
