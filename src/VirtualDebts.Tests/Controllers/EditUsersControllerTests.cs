@@ -226,7 +226,7 @@ public class EditUsersControllerTests
         this.givenInstance.ViewModel.Users.Should().BeEquivalentTo(userIdentities);
     }
 
-    private AppState CreateAppState(IList<string> userNames)
+    static private AppState CreateAppState(IList<string> userNames)
     {
         var users = userNames
             .Select(userName => new User(Guid.NewGuid(), userName))

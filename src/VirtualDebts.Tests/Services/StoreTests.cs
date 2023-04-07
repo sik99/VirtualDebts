@@ -150,7 +150,7 @@ internal class DataClass
 
     public override bool Equals(object obj)
     {
-        if (!(obj is DataClass other))
+        if (obj is not DataClass other)
             return false;
 
         if (!this.AsciiCodes.SequenceEqual(other.AsciiCodes))

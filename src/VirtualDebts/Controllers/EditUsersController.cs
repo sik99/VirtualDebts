@@ -37,24 +37,24 @@ public class EditUsersController : ControllerBase
         this.store = store ?? throw new ArgumentNullException(nameof(store));
         this.commandFactory = commandFactory ?? throw new ArgumentNullException(nameof(commandFactory));
 
-        this.AddUserCommand = this.commandFactory.CreateAsync(this.OnAddUser, this.ShouldEnableAddUserButton);
-        this.RemoveUserCommand = this.commandFactory.CreateAsync(this.OnRemoveUser, this.ShouldEnableRemoveUserButton);
+        this.AddUserCommand = this.commandFactory.CreateAsync(this.OnAddUser, ShouldEnableAddUserButton);
+        this.RemoveUserCommand = this.commandFactory.CreateAsync(this.OnRemoveUser, ShouldEnableRemoveUserButton);
         this.ViewLoadedCommand = this.commandFactory.Create(this.OnViewLoaded);
 
         this.store.StateChanged += () => this.dispatcher?.InvokeInMainThread(this.UpdateProperties);
     }
 
-    private string CastToString(object obj)
+    static private string CastToString(object obj)
     {
-        return obj as string ?? throw new ArgumentNullException($"{nameof(obj)} must be of type string");
+        return obj as string ?? throw new ArgumentException($"{nameof(obj)} must be of type string");
     }
 
-    private UserIdentity CastToUserIdentity(object obj)
+    static private UserIdentity CastToUserIdentity(object obj)
     {
-        return obj as UserIdentity? ?? throw new ArgumentNullException($"{nameof(obj)} must be of type {nameof(UserIdentity)}");
+        return obj as UserIdentity? ?? throw new ArgumentException($"{nameof(obj)} must be of type {nameof(UserIdentity)}");
     }
 
-    public bool ShouldEnableAddUserButton(object userToAdd)
+    static public bool ShouldEnableAddUserButton(object userToAdd)
     {
         if (userToAdd is null)
             return false;
@@ -63,7 +63,7 @@ public class EditUsersController : ControllerBase
         return !string.IsNullOrWhiteSpace(userName);
     }
 
-    public bool ShouldEnableRemoveUserButton(object userToRemove)
+    static public bool ShouldEnableRemoveUserButton(object userToRemove)
     {
         if (userToRemove is null)
             return false;
