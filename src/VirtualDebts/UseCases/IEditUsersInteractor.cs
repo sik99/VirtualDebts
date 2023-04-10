@@ -1,11 +1,10 @@
 ﻿using System.Threading.Tasks;
 using VirtualDebts.Models;
 
-namespace VirtualDebts.UseCases
+namespace VirtualDebts.UseCases;
+
+public interface IEditUsersInteractor
 {
-    public interface IEditUsersInteractor
-    {
-        Task AddUser(string userName);
-        Task RemoveUser(UserIdentity userIdentity);
-    }
+    Task AddUser(string userName);
+    Task RemoveUser(UserIdentity userIdentity);
 }

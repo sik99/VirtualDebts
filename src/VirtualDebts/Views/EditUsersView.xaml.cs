@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Xaml;
+using VirtualDebts.Controllers;
 
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+namespace VirtualDebts.Views;
 
-namespace VirtualDebts.Views
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class EditUsersView : ContentPage
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EditUsersView : ContentPage
+    public EditUsersView(EditUsersController controller)
     {
-        public EditUsersView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        BindingContext = controller;
     }
 }

@@ -1,24 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
-             xmlns:resources="clr-namespace:VirtualDebts.Properties"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:lang="clr-namespace:VirtualDebts.Resources.Strings"
              x:Class="VirtualDebts.Views.EditUsersView"
-             Title="{x:Static resources:Resources.EditUsers_PageTitle}"
+             Title="{x:Static lang:AppResources.EditUsers_PageTitle}"
              Padding="15">
 
     <ContentPage.Behaviors>
-        <xct:EventToCommandBehavior EventName="Appearing" Command="{Binding ViewLoadedCommand}"/>
+        <toolkit:EventToCommandBehavior EventName="Appearing" Command="{Binding ViewLoadedCommand}"/>
     </ContentPage.Behaviors>
 
     <StackLayout>
-        <Label Text="{x:Static resources:Resources.EditUsers_AddUserLabel}" FontAttributes="Bold" />
+        <Label Text="{x:Static lang:AppResources.EditUsers_AddUserLabel}" FontAttributes="Bold" />
         <Entry x:Name="UserToAdd" />
-        <Button Text="{x:Static resources:Resources.EditUsers_AddUserButton}" Command="{Binding AddUserCommand}" CommandParameter="{Binding Source={x:Reference UserToAdd}, Path=Text}" CornerRadius="10" TextTransform="None" />
-        <Label Text="{x:Static resources:Resources.EditUsers_RemoveUserLabel}" Margin="0,30,0,0" FontAttributes="Bold" />
+        <Button Text="{x:Static lang:AppResources.EditUsers_AddUserButton}" Command="{Binding AddUserCommand}" CommandParameter="{Binding Source={x:Reference UserToAdd}, Path=Text}" CornerRadius="10" TextTransform="None" />
+        <Label Text="{x:Static lang:AppResources.EditUsers_RemoveUserLabel}" Margin="0,30,0,0" FontAttributes="Bold" />
         <Picker x:Name="UserToRemove" ItemsSource="{Binding ViewModel.Users}" ItemDisplayBinding="{Binding Name}"/>
-        <Button Text="{x:Static resources:Resources.EditUsers_RemoveUserButton}" Command="{Binding RemoveUserCommand}" CommandParameter="{Binding Source={x:Reference UserToRemove}, Path=SelectedItem}" CornerRadius="10" TextTransform="None" />
-        <Label Text="{x:Static resources:Resources.EditUsers_UserListLabel}" Margin="0,30,0,0" FontAttributes="Bold" />
+        <Button Text="{x:Static lang:AppResources.EditUsers_RemoveUserButton}" Command="{Binding RemoveUserCommand}" CommandParameter="{Binding Source={x:Reference UserToRemove}, Path=SelectedItem}" CornerRadius="10" TextTransform="None" />
+        <Label Text="{x:Static lang:AppResources.EditUsers_UserListLabel}" Margin="0,30,0,0" FontAttributes="Bold" />
         <Label Text="{Binding ViewModel.UserNamesAsString}" Margin="15,0,0,0" />
     </StackLayout>
 </ContentPage>

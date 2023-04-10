@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Xaml;
 
-using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+namespace VirtualDebts.Views;
 
-namespace VirtualDebts.Views
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class EmptyView : ContentPage
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EmptyView : ContentPage
+    public EmptyView()
     {
-        public EmptyView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -1,12 +1,11 @@
 ﻿using System;
 
-namespace VirtualDebts.Server
+namespace VirtualDebts.Server;
+
+public class IdGenerator : IUserIdGenerator
 {
-    public class IdGenerator : IUserIdGenerator
+    public Guid Next()
     {
-        public Guid Next()
-        {
-            return Guid.NewGuid();
-        }
+        return Guid.NewGuid();
     }
 }

@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Forms;
+﻿using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Xaml;
+using VirtualDebts.Controllers;
 
-namespace VirtualDebts.Views
+namespace VirtualDebts.Views;
+
+[XamlCompilation(XamlCompilationOptions.Compile)]
+public partial class MainMenuView : ContentPage
 {
-    public partial class MainMenuView : ContentPage
+    public MainMenuView(MainMenuController controller)
     {
-        public MainMenuView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
+        BindingContext = controller;
     }
 }

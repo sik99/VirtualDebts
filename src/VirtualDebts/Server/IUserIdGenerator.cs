@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace VirtualDebts.Server
+namespace VirtualDebts.Server;
+
+public interface IUserIdGenerator
 {
-    public interface IUserIdGenerator
-    {
-        Guid Next();
-    }
+    Guid Next();
 }
