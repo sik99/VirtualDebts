@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
+using VirtualDebts.Views;
 
 using IDispatcher = VirtualDebts.Binding.IDispatcher;
 
@@ -49,21 +50,21 @@ namespace VirtualDebts.Controllers
         public async Task OnEditUsers()
         {
             this.CanNavigate = false;
-            await this.navigationService.NavigateTo(ViewId.EditUsers);
+            await this.navigationService.NavigateTo(typeof(EditUsersView));
             this.CanNavigate = true;
         }
 
         public async Task OnNewPayment()
         {
             this.CanNavigate = false;
-            await this.navigationService.NavigateTo(ViewId.NewPayment);
+            await this.navigationService.NavigateTo(typeof(EmptyView));
             this.CanNavigate = true;
         }
 
         public async Task OnCurrentBalance()
         {
             this.CanNavigate = false;
-            await this.navigationService.NavigateTo(ViewId.CurrentBalance);
+            await this.navigationService.NavigateTo(typeof(EmptyView));
             this.CanNavigate = true;
         }
     }

@@ -1,9 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using VirtualDebts.Binding;
+using VirtualDebts.Views;
 
 namespace VirtualDebts.Controllers
 {
@@ -30,7 +32,7 @@ namespace VirtualDebts.Controllers
             this.givenInstance.EditUsersCommand.Execute(null);
 
             // Then
-            ThenVerifyNavigatedToView(ViewId.EditUsers);
+            ThenVerifyNavigatedToView(typeof(EditUsersView));
         }
 
         [TestMethod]
@@ -51,7 +53,7 @@ namespace VirtualDebts.Controllers
             couldNavigateDuringTask.Should().BeFalse();
             this.givenInstance.CanNavigate.Should().BeTrue();
 
-            ThenVerifyNavigatedToView(ViewId.EditUsers);
+            ThenVerifyNavigatedToView(typeof(EditUsersView));
         }
         #endregion
 
@@ -63,7 +65,7 @@ namespace VirtualDebts.Controllers
             this.givenInstance.NewPaymentCommand.Execute(null);
 
             // Then
-            ThenVerifyNavigatedToView(ViewId.NewPayment);
+            ThenVerifyNavigatedToView(typeof(EmptyView));
         }
 
         [TestMethod]
@@ -84,7 +86,7 @@ namespace VirtualDebts.Controllers
             couldNavigateDuringTask.Should().BeFalse();
             this.givenInstance.CanNavigate.Should().BeTrue();
 
-            ThenVerifyNavigatedToView(ViewId.NewPayment);
+            ThenVerifyNavigatedToView(typeof(EmptyView));
         }
         #endregion
 
@@ -96,7 +98,7 @@ namespace VirtualDebts.Controllers
             this.givenInstance.CurrentBalanceCommand.Execute(null);
 
             // Then
-            ThenVerifyNavigatedToView(ViewId.CurrentBalance);
+            ThenVerifyNavigatedToView(typeof(EmptyView));
         }
 
         [TestMethod]
@@ -117,14 +119,14 @@ namespace VirtualDebts.Controllers
             couldNavigateDuringTask.Should().BeFalse();
             this.givenInstance.CanNavigate.Should().BeTrue();
 
-            ThenVerifyNavigatedToView(ViewId.CurrentBalance);
+            ThenVerifyNavigatedToView(typeof(EmptyView));
         }
         #endregion
 
         #region Then
-        private void ThenVerifyNavigatedToView(ViewId viewId)
+        private void ThenVerifyNavigatedToView(Type viewType)
         {
-            this.givenFixture.NavigationServiceMock.Verify(mock => mock.NavigateTo(viewId), Times.Exactly(1));
+            this.givenFixture.NavigationServiceMock.Verify(mock => mock.NavigateTo(viewType), Times.Exactly(1));
             this.givenFixture.NavigationServiceMock.VerifyNoOtherCalls();
         }
         #endregion
@@ -133,7 +135,7 @@ namespace VirtualDebts.Controllers
         private void GivenNavigateToWaitsForEvent(AutoResetEvent waitEvent)
         {
             this.givenFixture.NavigationServiceMock
-                    .Setup(mock => mock.NavigateTo(It.IsAny<ViewId>()))
+                    .Setup(mock => mock.NavigateTo(It.IsAny<Type>()))
                     .Returns(Task.Factory.StartNew(() => waitEvent.WaitOne()));
         }
 
@@ -145,7 +147,7 @@ namespace VirtualDebts.Controllers
             public GivenFixture()
             {
                 this.NavigationServiceMock
-                    .Setup(mock => mock.NavigateTo(It.IsAny<ViewId>()))
+                    .Setup(mock => mock.NavigateTo(It.IsAny<Type>()))
                     .Returns(Task.CompletedTask);
             }
         }

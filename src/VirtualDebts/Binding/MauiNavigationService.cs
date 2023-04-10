@@ -6,22 +6,20 @@ using VirtualDebts.Resources.Strings;
 namespace VirtualDebts.Binding
 {
     public class MauiNavigationService : INavigationService
-    {
-        private readonly MauiViewProvider viewProvider;
-
-        public MauiNavigationService(MauiViewProvider viewProvider)
+    { 
+        public static void RegisterView(Type viewType)
         {
-            this.viewProvider = viewProvider ?? throw new ArgumentNullException(nameof(viewProvider));
+            Routing.RegisterRoute(viewType.Name, viewType);
         }
 
-        public async Task NavigateTo(ViewId viewId)
+        public Task NavigateTo(Type viewType)
         {
-            await Application.Current.MainPage.Navigation?.PushAsync(this.viewProvider.GetView(viewId));
+            return Shell.Current.GoToAsync(viewType.Name);
         }
 
-        public async Task ShowMessageBox(string title, string message)
+        public Task ShowMessageBox(string title, string message)
         {
-            await Application.Current.MainPage.DisplayAlert(title, message, AppResources.MessageBox_OkButton);
+            return Shell.Current.DisplayAlert(title, message, AppResources.MessageBox_OkButton);
         }
     }
 }
