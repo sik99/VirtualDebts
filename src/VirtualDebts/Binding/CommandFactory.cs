@@ -24,7 +24,7 @@ public class CommandFactory : ICommandFactory
         );
     }
 
-    public ICommand Create(Action<object> action, Predicate<object> canExecute)
+    public ICommand Create(Action<object?> action, Predicate<object?> canExecute)
     {
         return new RelayCommand<object>(
             execute: action,
@@ -48,9 +48,9 @@ public class CommandFactory : ICommandFactory
         );
     }
 
-    public IAsyncCommand<object> CreateAsync(Func<object, Task> action, Predicate<object> canExecute)
+    public IAsyncCommand<object?> CreateAsync(Func<object?, Task> action, Predicate<object?> canExecute)
     {
-        return new AsyncCommand<object>(
+        return new AsyncCommand<object?>(
             execute: action,
             canExecute: parameter => canExecute(parameter)
         );

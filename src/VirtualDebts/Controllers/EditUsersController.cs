@@ -54,7 +54,7 @@ public class EditUsersController : ControllerBase
         return obj as UserIdentity? ?? throw new ArgumentException($"{nameof(obj)} must be of type {nameof(UserIdentity)}");
     }
 
-    static public bool ShouldEnableAddUserButton(object userToAdd)
+    static public bool ShouldEnableAddUserButton(object? userToAdd)
     {
         if (userToAdd is null)
             return false;
@@ -63,7 +63,7 @@ public class EditUsersController : ControllerBase
         return !string.IsNullOrWhiteSpace(userName);
     }
 
-    static public bool ShouldEnableRemoveUserButton(object userToRemove)
+    static public bool ShouldEnableRemoveUserButton(object? userToRemove)
     {
         if (userToRemove is null)
             return false;
@@ -72,15 +72,15 @@ public class EditUsersController : ControllerBase
         return !string.IsNullOrEmpty(userName);
     }
 
-    public async Task OnAddUser(object parameter)
+    public async Task OnAddUser(object? parameter)
     {
-        string userToAdd = CastToString(parameter);
+        string userToAdd = CastToString(parameter!);
         await interactor.AddUser(userToAdd);
     }
 
-    public async Task OnRemoveUser(object parameter)
+    public async Task OnRemoveUser(object? parameter)
     {
-        UserIdentity userToRemove = CastToUserIdentity(parameter);
+        UserIdentity userToRemove = CastToUserIdentity(parameter!);
         if (!this.ViewModel.Users.Contains(userToRemove))
             throw new ArgumentOutOfRangeException($"List of users does not contain user \"{userToRemove}\"");
         await this.interactor.RemoveUser(userToRemove);

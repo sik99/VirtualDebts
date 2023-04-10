@@ -14,7 +14,7 @@ namespace VirtualDebts.UseCases;
 [TestClass]
 public class EditUsersInteractorTests
 {
-    private EditUsersInteractor givenInstance;
+    private EditUsersInteractor givenInstance = null!;
     private readonly GivenFixture givenFixture = new();
 
     [TestInitialize]

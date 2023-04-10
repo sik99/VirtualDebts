@@ -113,7 +113,7 @@ public class StoreTests
 internal class TestState : ICloneable
 {
     public int ValueObject { get; set; }
-    public DataClass ReferenceObject { get; set; }
+    public DataClass ReferenceObject { get; set; } = new("");
 
     public object Clone()
     {
@@ -148,7 +148,7 @@ internal class DataClass
         this.AsciiCodes = data.ToCharArray().Select(c => (int)c).ToList();
     }
 
-    public override bool Equals(object obj)
+    public override bool Equals(object? obj)
     {
         if (obj is not DataClass other)
             return false;

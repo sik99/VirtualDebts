@@ -17,7 +17,7 @@ namespace VirtualDebts.Controllers;
 [TestClass]
 public class EditUsersControllerTests
 {
-    private EditUsersController givenInstance;
+    private EditUsersController givenInstance = null!;
     private readonly GivenFixture givenFixture = new();
 
     [TestInitialize]
@@ -39,7 +39,7 @@ public class EditUsersControllerTests
 
         // Given
         bool wasViewModelUpdated = false;
-        this.givenInstance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { wasViewModelUpdated = true; };
+        this.givenInstance.PropertyChanged += (object? sender, PropertyChangedEventArgs e) => { wasViewModelUpdated = true; };
 
         // When
         this.givenInstance.ViewLoadedCommand.Execute(null);
@@ -53,7 +53,7 @@ public class EditUsersControllerTests
     {
         // Given
         bool wasViewModelUpdated = false;
-        this.givenInstance.PropertyChanged += (object sender, PropertyChangedEventArgs e) => { wasViewModelUpdated = true; };
+        this.givenInstance.PropertyChanged += (object? sender, PropertyChangedEventArgs e) => { wasViewModelUpdated = true; };
 
         ImmutableList<string> userNames = new List<string> { "Alice", "Bob", "Cecilia" }.ToImmutableList();
 
@@ -91,7 +91,7 @@ public class EditUsersControllerTests
     public void OnAddUser_is_disabled_for_null()
     {
         // Given
-        object userName = null;
+        object? userName = null;
 
         // When
         bool isAddUserEnabled = this.givenInstance.AddUserCommand.CanExecute(userName);
@@ -173,7 +173,7 @@ public class EditUsersControllerTests
     public void OnRemoveUser_is_disabled_for_null()
     {
         // Given
-        object user = null;
+        object? user = null;
 
         // When
         bool isRemoveUserEnabled = this.givenInstance.RemoveUserCommand.CanExecute(user);

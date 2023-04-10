@@ -12,7 +12,7 @@ namespace VirtualDebts.Controllers;
 [TestClass]
 public class MainMenuControllerTests
 {
-    private MainMenuController givenInstance;
+    private MainMenuController givenInstance = null!;
     private readonly GivenFixture givenFixture = new();
 
     [TestInitialize]

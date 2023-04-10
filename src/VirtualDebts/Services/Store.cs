@@ -28,5 +28,5 @@ public class Store<TState> where TState : ICloneable, new()
         }
     }
 
-    public event StateChangedHandler StateChanged;
+    public event StateChangedHandler? StateChanged;
 }
