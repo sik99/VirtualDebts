@@ -1,11 +1,10 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31611.283
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDebts", "VirtualDebts\VirtualDebts.csproj", "{6DF5A016-D6FF-4ECF-843B-EFB2EF214A22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualDebts.Tests", "VirtualDebts.Tests\VirtualDebts.Tests.csproj", "{D407BD5D-11CF-426D-9906-01C7BF598A10}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualDebts.Tests", "VirtualDebts.Tests\VirtualDebts.Tests.csproj", "{D407BD5D-11CF-426D-9906-01C7BF598A10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
