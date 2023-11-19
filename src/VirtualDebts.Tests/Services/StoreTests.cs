@@ -137,16 +137,10 @@ internal static class TestStateExtensions
     }
 }
 
-internal class DataClass
+internal class DataClass(string data)
 {
-    public string DataString { get; set; }
-    public List<int> AsciiCodes { get; set; }
-
-    public DataClass(string data)
-    {
-        this.DataString = data;
-        this.AsciiCodes = data.ToCharArray().Select(c => (int)c).ToList();
-    }
+    public string DataString { get; set; } = data;
+    public List<int> AsciiCodes { get; set; } = data.ToCharArray().Select(c => (int)c).ToList();
 
     public override bool Equals(object? obj)
     {

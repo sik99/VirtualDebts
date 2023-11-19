@@ -55,7 +55,7 @@ public class EditUsersControllerTests
         bool wasViewModelUpdated = false;
         this.givenInstance.PropertyChanged += (object? sender, PropertyChangedEventArgs e) => { wasViewModelUpdated = true; };
 
-        ImmutableList<string> userNames = new List<string> { "Alice", "Bob", "Cecilia" }.ToImmutableList();
+        ImmutableList<string> userNames = ["Alice", "Bob", "Cecilia"];
 
         // When
         this.givenFixture.Store.Update(appState =>

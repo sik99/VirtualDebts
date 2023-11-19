@@ -5,7 +5,7 @@ namespace VirtualDebts.Models;
 
 public class AppState : ICloneable
 {
-    public List<User> Users { get; set; } = new List<User>();
+    public List<User> Users { get; set; } = [];
 
     public object Clone()
     {
