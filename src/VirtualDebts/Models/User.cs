@@ -2,20 +2,13 @@
 
 namespace VirtualDebts.Models;
 
-public struct User
+public struct User(Guid id, string name, int balance = 0)
 {
-    public Guid Id { get; }
-    public string Name { get; set; }
-    public int Balance { get; set; }
+    public Guid Id { get; } = id;
+    public string Name { get; set; } = name;
+    public int Balance { get; set; } = balance;
 
-    public User(Guid id, string name, int balance = 0)
-    {
-        this.Id = id;
-        this.Name = name;
-        this.Balance = balance;
-    }
-
-    public UserIdentity GetIdentity()
+    public readonly UserIdentity GetIdentity()
     {
         return new UserIdentity(this.Id, this.Name);
     }

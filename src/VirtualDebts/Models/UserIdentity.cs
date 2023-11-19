@@ -2,14 +2,8 @@
 
 namespace VirtualDebts.Models;
 
-public struct UserIdentity
+public struct UserIdentity(Guid id, string name)
 {
-    public Guid Id { get; }
-    public string Name { get; set; }
-
-    public UserIdentity(Guid id, string name)
-    {
-        this.Id = id;
-        this.Name = name;
-    }
+    public Guid Id { get; } = id;
+    public string Name { get; set; } = name;
 }
